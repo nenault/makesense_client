@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { UserContext } from "../Auth/UserContext";
 import { withRouter } from "react-router-dom";
 import apiHandler from "../../api/apiHandler";
+import { Link } from "react-router-dom";
 
 class FormSignin extends Component {
   static contextType = UserContext;
@@ -43,13 +44,42 @@ class FormSignin extends Component {
 
   render() {
     return (
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
-        <button>Submit</button>
-      </form>
+      <div className="container">
+        <form
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
+          <img
+            style={{
+              width: "30vw",
+              marginBottom: "50px",
+            }}
+            src="https://s3-eu-west-1.amazonaws.com/makesense.org/uploads/20200827171359/vRecurso-16-8.png"
+            alt="logo_reaction"
+          />
+          <label htmlFor="email">Mon email</label>
+          <input className="input" type="email" id="email" name="email" />
+          <label htmlFor="password">Mon mot de passe</label>
+          <input
+            className="input"
+            type="password"
+            id="password"
+            name="password"
+          />
+          <button
+            style={{
+              marginTop: "50px",
+            }}
+            className="btn red"
+          >
+            Je me connecte
+          </button>
+          <Link to={"/signup"} className="register">
+            Ou je m'inscris
+          </Link>
+        </form>
+      </div>
     );
   }
 }

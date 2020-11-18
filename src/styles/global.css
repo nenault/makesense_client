@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +5,7 @@
 }
 
 html {
-  font-family: "Manrope", sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 a {
@@ -17,4 +15,186 @@ a {
 
 ul {
   list-style-type: none;
+}
+
+h1,
+h2,
+h3 {
+  color: #196c84 !important;
+  font-weight: 900 !important;
+}
+
+body {
+  width: 100vw;
+}
+
+.container {
+  width: 100vw;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact {
+  width: 80vw;
+  display: flex;
+}
+
+.contact-info {
+  width: 40vw;
+}
+
+.contact-histo {
+  width: 40vw;
+}
+
+.histo-box {
+  width: 40vw;
+}
+
+.contacts-admin {
+  display: flex;
+  /* width: 80vw; */
+  justify-content: space-around;
+}
+
+.contacts-active {
+  width: 30vw;
+}
+
+.contacts-inactive {
+  width: 30vw;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70vw;
+  background-color: #fff20d;
+  height: 70vh;
+  justify-content: center;
+  border-radius: 10%;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  font-family: "Raleway", sans-serif;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.25em;
+  line-height: 1em;
+  font-weight: 800;
+  padding: 0.8em 2em;
+  border: 0;
+  cursor: pointer;
+  background-color: #0c3944;
+  min-width: 7em;
+  text-align: center;
+  border-radius: 3em;
+}
+
+.red {
+  background-color: #e36164;
+}
+
+.register {
+  color: #196c84 !important;
+  font-weight: 900;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.input {
+  border: 0px;
+  margin: 10px;
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  /* width: 40%; */
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: 0.5em 0 0.75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 0.35em;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(251, 243, 12, 0.2);
+}
+
+table th,
+table td {
+  padding: 0.625em;
+  text-align: center;
+}
+
+table th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background-color: #ec6363;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
 }

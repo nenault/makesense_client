@@ -1,59 +1,25 @@
 import React, { Component } from "react";
+import apiHandler from "../../api/apiHandler";
+import SearchBar from "../../components/Forms/SearchBar";
 import { Link } from "react-router-dom";
-import apiHandler from "../api/apiHandler.js";
-import { UserContext } from "../components/Auth/UserContext";
-import Mycontacts from "./Contacts/Mycontacts.jsx";
-import NeedCallContacts from "./Contacts/NeedCallContacts.jsx";
-import NeedWriteContacts from "./Contacts/NeedWriteContacts.jsx";
 
-class Home extends Component {
-  static contextType = UserContext;
-
+class NeedCallContacts extends Component {
   state = {
-    // mycontacts: [],
     contacts: [],
+    searchContacts: [],
   };
 
   componentDidMount() {
     apiHandler
       .getAll("/api/contacts")
       .then((apiRes) => {
-        this.setState({ contacts: apiRes.data });
+        this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
         this.isCallNeeded();
-        // if (this.context.user.contacts.length > 0) {
-        //   apiHandler
-        //     .getOne("/api/users/", this.context.user._id)
-        //     .then((apiRes) => {
-        //       // console.log("fdsfds");
-        //       // this.setState({ mycontacts: apiRes.data.contacts });
-        //       this.getContacts(apiRes.data.contacts);
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
-        // }
       })
       .catch((apiErr) => {
         console.log(apiErr);
       });
   }
-
-  // getContacts = (data) => {
-  //   const contactsArr = [];
-  //   for (const [index, item] of data.entries()) {
-  //     // console.log(item.contact);
-  //     apiHandler
-  //       .getOne("/api/contacts/", item.contact)
-  //       .then((apiRes) => {
-  //         // console.log(apiRes.data);
-  //         contactsArr.push(apiRes.data);
-  //         this.setState({ mycontacts: contactsArr });
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
 
   isCallNeeded() {
     for (const [index, item] of this.state.contacts.entries()) {
@@ -116,6 +82,14 @@ class Home extends Component {
         }
       }
     }
+
+    const needCallContacts = this.state.contacts.filter(
+      (contact) =>
+        contact.needcall === true &&
+        contact.isActive === true &&
+        contact.frequency != "eMail : Pas de limitation"
+    );
+    this.setState({ searchContacts: needCallContacts });
   }
 
   formatDate(date) {
@@ -125,30 +99,58 @@ class Home extends Component {
     return formatedDate;
   }
 
-  render() {
-    const contactsToCall = [];
+  search = (searchContact) => {
+    const copyContacts = [...this.state.contacts];
 
-    for (const [index, item] of this.state.contacts.entries()) {
-      if (item.needcall === true) {
-        contactsToCall.push(item);
-      }
+    // return product.name.toLowerCase().includes(props.name.toLowerCase())
+
+    const filteredContacts = copyContacts.filter((contact) =>
+      contact.name.toLowerCase().includes(searchContact.search.toLowerCase())
+    );
+    this.setState({ searchContacts: filteredContacts });
+  };
+
+  render() {
+    if (!this.state.contacts) {
+      return <div>Loading</div>;
     }
-    // if (!this.context.user) {
-    //   return <div>Loading</div>;
-    // }
     return (
       <div>
-        {this.context.user && this.context.user.contacts.length > 0 ? (
-          <Mycontacts />
-        ) : (
-          ""
-        )}
-
-        <NeedCallContacts />
-        <NeedWriteContacts />
+        <h2>Les contacts qui doivent être appelés</h2>
+        <SearchBar handleSearch={this.search} />
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Nom</th>
+              <th scope="col">Dernier Appel</th>
+              <th scope="col">Fréquence d'appel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.searchContacts.map((contact) => (
+              <tr key={contact._id}>
+                <td scope="row" data-label="Nom">
+                  <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
+                </td>
+                <td data-label="Dernier Appel">
+                  <Link to={`/contacts/${contact._id}/`}>
+                    {contact.lastcall
+                      ? this.formatDate(contact.lastcall)
+                      : "never"}
+                  </Link>
+                </td>
+                <td data-label="Fréquence d'appel">
+                  <Link to={`/contacts/${contact._id}/`}>
+                    {contact.frequency}
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }
 }
 
-export default Home;
+export default NeedCallContacts;

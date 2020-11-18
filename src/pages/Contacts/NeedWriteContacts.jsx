@@ -1,16 +1,9 @@
 import React, { Component } from "react";
+import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
-import apiHandler from "../api/apiHandler.js";
-import { UserContext } from "../components/Auth/UserContext";
-import Mycontacts from "./Contacts/Mycontacts.jsx";
-import NeedCallContacts from "./Contacts/NeedCallContacts.jsx";
-import NeedWriteContacts from "./Contacts/NeedWriteContacts.jsx";
 
-class Home extends Component {
-  static contextType = UserContext;
-
+class NeedWriteContacts extends Component {
   state = {
-    // mycontacts: [],
     contacts: [],
   };
 
@@ -20,40 +13,11 @@ class Home extends Component {
       .then((apiRes) => {
         this.setState({ contacts: apiRes.data });
         this.isCallNeeded();
-        // if (this.context.user.contacts.length > 0) {
-        //   apiHandler
-        //     .getOne("/api/users/", this.context.user._id)
-        //     .then((apiRes) => {
-        //       // console.log("fdsfds");
-        //       // this.setState({ mycontacts: apiRes.data.contacts });
-        //       this.getContacts(apiRes.data.contacts);
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
-        // }
       })
       .catch((apiErr) => {
         console.log(apiErr);
       });
   }
-
-  // getContacts = (data) => {
-  //   const contactsArr = [];
-  //   for (const [index, item] of data.entries()) {
-  //     // console.log(item.contact);
-  //     apiHandler
-  //       .getOne("/api/contacts/", item.contact)
-  //       .then((apiRes) => {
-  //         // console.log(apiRes.data);
-  //         contactsArr.push(apiRes.data);
-  //         this.setState({ mycontacts: contactsArr });
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
 
   isCallNeeded() {
     for (const [index, item] of this.state.contacts.entries()) {
@@ -116,6 +80,11 @@ class Home extends Component {
         }
       }
     }
+
+    const needCallContacts = this.state.contacts.filter(
+      (contact) => contact.frequency === "eMail : Pas de limitation"
+    );
+    this.setState({ contacts: needCallContacts });
   }
 
   formatDate(date) {
@@ -126,29 +95,43 @@ class Home extends Component {
   }
 
   render() {
-    const contactsToCall = [];
-
-    for (const [index, item] of this.state.contacts.entries()) {
-      if (item.needcall === true) {
-        contactsToCall.push(item);
-      }
+    if (!this.state.contacts) {
+      return <div>Loading</div>;
     }
-    // if (!this.context.user) {
-    //   return <div>Loading</div>;
-    // }
     return (
       <div>
-        {this.context.user && this.context.user.contacts.length > 0 ? (
-          <Mycontacts />
-        ) : (
-          ""
-        )}
+        <h2>Les contacts auxquels on doit écrire</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Dernier Appel</th>
+              <th>Fréquence d'appel </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.contacts.map((contact) => (
+              <tr key={contact._id}>
+                <td>
+                  <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
+                </td>
+                <td>
+                  {contact.lastcall
+                    ? this.formatDate(contact.lastcall)
+                    : "never"}
+                </td>
+                <td>{contact.frequency}</td>
 
-        <NeedCallContacts />
-        <NeedWriteContacts />
+                <td>
+                  <Link to={`/contacts/${contact._id}/`}>see</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }
 }
 
-export default Home;
+export default NeedWriteContacts;

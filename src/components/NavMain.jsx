@@ -22,22 +22,35 @@ const NavMain = (props) => {
   return (
     <nav className="NavMain">
       <NavLink exact to="/">
-        <h3 className="logo">App name</h3>
+        <h3 className="logo">Makesense</h3>
       </NavLink>
       <ul className="nav-list">
-        {context.isLoggedIn && (
+      {context.isMob && (
           <React.Fragment>
             <li>
-              <NavLink to="/profile">
-                {context.user && context.user.email}
-              </NavLink>
+              <NavLink to="/contacts">Contacts</NavLink>
             </li>
             <li>
-              <p onClick={handleLogout}>Logout</p>
+              <NavLink to="/users">Bénévoles</NavLink>
+            </li>
+            <li>
+              <NavLink to="/institutions">Etablissements</NavLink>
+            </li>
+          </React.Fragment>
+        )} 
+        {context.isLoggedIn && (
+          <React.Fragment>
+            {/* <li>
+              <NavLink to="/profile">
+                {context.user && context.user.email.split("@")[0]}
+              </NavLink>
+            </li> */}
+            <li>
+              <p onClick={handleLogout}>Me déconnecter</p>
             </li>
           </React.Fragment>
         )}
-        {!context.isLoggedIn && (
+        {/* {!context.isLoggedIn && (
           <React.Fragment>
             <li>
               <NavLink to="/signin">Log in</NavLink>
@@ -46,7 +59,7 @@ const NavMain = (props) => {
               <NavLink to="/signup">Create account</NavLink>
             </li>
           </React.Fragment>
-        )}
+        )} */}
       </ul>
     </nav>
   );

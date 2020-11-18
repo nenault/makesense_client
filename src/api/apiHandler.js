@@ -44,10 +44,30 @@ export default {
       .catch(errorHandler);
   },
 
-  getItems() {
+  /*   getItems() {
     return service
       .get("/api/items")
       .then((res) => res.data)
       .catch(errorHandler);
+  }, */
+
+  getAll(endPoint) {
+    return service.get(endPoint);
+  },
+
+  getOne(endPoint, id) {
+    return service.get(endPoint + id);
+  },
+
+  createOne(endPoint, data) {
+    return service.post(endPoint, data);
+  },
+
+  updateOne(endPoint, data) {
+    return service.patch(endPoint, data);
+  },
+
+  deleteOne(endPoint, id) {
+    return service.delete(endPoint + id);
   },
 };
