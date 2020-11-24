@@ -1,21 +1,37 @@
 import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
+import SearchBar from "../../components/Forms/SearchBar";
 
 class InactiveContacts extends Component {
   state = {
     contacts: [],
+    searchContacts: [],
   };
 
   componentDidMount() {
     apiHandler
       .getAll("/api/contacts")
       .then((apiRes) => {
-        this.setState({ contacts: apiRes.data });
+        this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
       })
       .catch((apiErr) => {
         console.log(apiErr);
       });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.isUpdating !== prevProps.isUpdating) {
+      apiHandler
+        .getAll("/api/contacts")
+        .then((apiRes) => {
+          this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
+          this.props.stopUpdating();
+        })
+        .catch((apiErr) => {
+          console.log(apiErr);
+        });
+    }
   }
 
   deleteOne(id) {
@@ -30,7 +46,17 @@ class InactiveContacts extends Component {
       .updateOne("/api/contacts/" + id, {
         isActive: true,
       })
-      .then((apiRes) => {})
+      .then((apiRes) => {
+        apiHandler
+          .getAll("/api/contacts")
+          .then((apiRes) => {
+            this.setState({ contacts: apiRes.data });
+            this.props.updating();
+          })
+          .catch((apiErr) => {
+            console.log(apiErr);
+          });
+      })
       .catch((apiErr) => console.log(apiErr));
   }
 
@@ -41,23 +67,37 @@ class InactiveContacts extends Component {
     return formatedDate;
   }
 
+  search = (searchContact) => {
+    const copyContacts = [...this.state.contacts];
+
+    // return product.name.toLowerCase().includes(props.name.toLowerCase())
+
+    const filteredContacts = copyContacts.filter((contact) =>
+      contact.name.toLowerCase().includes(searchContact.search.toLowerCase())
+    );
+    this.setState({ searchContacts: filteredContacts });
+  };
+
   render() {
     if (!this.state.contacts) {
       return <div>Loading</div>;
     }
 
-    const InactiveContacts = this.state.contacts.filter(
+    const InactiveContacts = this.state.searchContacts.filter(
       (contact) => contact.isActive === false
     );
+
     return (
       <div className="contacts-inactive">
-        <h2>Contacts inactifs</h2>
+        <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+          Contacts inactifs
+        </h3>
+        <SearchBar handleSearch={this.search} />
         <table>
           <thead>
             <tr>
               <th>Nom</th>
               <th>Dernier appel</th>
-              <th>Voir</th>
               <th>Editer</th>
               <th>Activer</th>
               <th>Supprimer</th>
@@ -66,15 +106,14 @@ class InactiveContacts extends Component {
           <tbody>
             {InactiveContacts.map((contact) => (
               <tr key={contact._id}>
-                <td>{contact.name}</td>
                 <td>
-                  {contact.lastcall
-                    ? this.formatDate(contact.lastcall)
-                    : "never"}
+                  <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
                 </td>
                 <td>
                   <Link to={`/contacts/${contact._id}/`}>
-                    <i className="fas fa-info-circle"></i>
+                    {contact.lastcall
+                      ? this.formatDate(contact.lastcall)
+                      : "never"}
                   </Link>
                 </td>
                 <td>

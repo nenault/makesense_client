@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
+import SearchBar from "../../components/Forms/SearchBar";
 
 class NeedWriteContacts extends Component {
   state = {
     contacts: [],
+    searchContacts: [],
   };
 
   componentDidMount() {
     apiHandler
       .getAll("/api/contacts")
       .then((apiRes) => {
-        this.setState({ contacts: apiRes.data });
+        this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
         this.isCallNeeded();
       })
       .catch((apiErr) => {
@@ -82,9 +84,9 @@ class NeedWriteContacts extends Component {
     }
 
     const needCallContacts = this.state.contacts.filter(
-      (contact) => contact.frequency === "eMail : Pas de limitation"
+      (contact) => contact.type === "eMail" && contact.isActive === true
     );
-    this.setState({ contacts: needCallContacts });
+    this.setState({ searchContacts: needCallContacts });
   }
 
   formatDate(date) {
@@ -94,36 +96,47 @@ class NeedWriteContacts extends Component {
     return formatedDate;
   }
 
+  search = (searchContact) => {
+    const copyContacts = [...this.state.contacts];
+
+    // return product.name.toLowerCase().includes(props.name.toLowerCase())
+
+    const filteredContacts = copyContacts.filter((contact) =>
+      contact.name.toLowerCase().includes(searchContact.search.toLowerCase())
+    );
+    this.setState({ searchContacts: filteredContacts });
+  };
+
   render() {
     if (!this.state.contacts) {
       return <div>Loading</div>;
     }
     return (
-      <div>
-        <h2>Les contacts auxquels on doit écrire</h2>
+      <div className="contacts-needwrite">
+        <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+          {this.state.searchContacts.length} contacts attendent nos mails
+        </h3>
+        <SearchBar handleSearch={this.search} />
         <table>
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Dernier Appel</th>
-              <th>Fréquence d'appel </th>
+              <th>Dernier<br/>mail</th>
             </tr>
           </thead>
           <tbody>
-            {this.state.contacts.map((contact) => (
+            {this.state.searchContacts.map((contact) => (
               <tr key={contact._id}>
                 <td>
                   <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
                 </td>
                 <td>
-                  {contact.lastcall
-                    ? this.formatDate(contact.lastcall)
-                    : "never"}
-                </td>
-                <td>{contact.frequency}</td>
-
-                <td>
-                  <Link to={`/contacts/${contact._id}/`}>see</Link>
+                  <Link to={`/contacts/${contact._id}/`}>
+                    {" "}
+                    {contact.lastcall
+                      ? this.formatDate(contact.lastcall)
+                      : "never"}
+                  </Link>
                 </td>
               </tr>
             ))}

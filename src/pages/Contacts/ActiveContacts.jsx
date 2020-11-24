@@ -14,11 +14,24 @@ class ActiveContacts extends Component {
       .getAll("/api/contacts")
       .then((apiRes) => {
         this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
-        this.isCallNeeded();
       })
       .catch((apiErr) => {
         console.log(apiErr);
       });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.isUpdating !== prevProps.isUpdating) {
+      apiHandler
+        .getAll("/api/contacts")
+        .then((apiRes) => {
+          this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
+          this.props.stopUpdating();
+        })
+        .catch((apiErr) => {
+          console.log(apiErr);
+        });
+    }
   }
 
   deleteOne(id) {
@@ -33,7 +46,20 @@ class ActiveContacts extends Component {
       .updateOne("/api/contacts/" + id, {
         isActive: false,
       })
-      .then((apiRes) => {})
+      .then((apiRes) => {
+        apiHandler
+          .getAll("/api/contacts")
+          .then((apiRes) => {
+            this.setState({
+              contacts: apiRes.data,
+              searchContacts: apiRes.data,
+            });
+            this.props.updating();
+          })
+          .catch((apiErr) => {
+            console.log(apiErr);
+          });
+      })
       .catch((apiErr) => console.log(apiErr));
   }
 
@@ -63,17 +89,18 @@ class ActiveContacts extends Component {
     const contacts = this.state.searchContacts.filter(
       (contact) => contact.isActive === true
     );
+
     return (
       <div className="contacts-active">
-        <h2>Contacts actifs</h2>
+        <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+          Contacts actifs
+        </h3>
         <SearchBar handleSearch={this.search} />
         <table>
           <thead>
             <tr>
               <th>Nom</th>
               <th>Dernier appel</th>
-              <th>frequence</th>
-              <th>Voir</th>
               <th>Editer</th>
               <th>Désactiver</th>
               <th>Supprimer</th>
@@ -82,16 +109,14 @@ class ActiveContacts extends Component {
           <tbody>
             {contacts.map((contact) => (
               <tr key={contact._id}>
-                <td>{contact.name}</td>
                 <td>
-                  {contact.lastcall
-                    ? this.formatDate(contact.lastcall)
-                    : "never"}
+                  <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
                 </td>
-                <td>{contact.frequency}</td>
                 <td>
                   <Link to={`/contacts/${contact._id}/`}>
-                    <i className="fas fa-info-circle"></i>
+                    {contact.lastcall
+                      ? this.formatDate(contact.lastcall)
+                      : "never"}
                   </Link>
                 </td>
                 <td>

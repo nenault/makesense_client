@@ -17,6 +17,7 @@ class OneContact extends Component {
     volunteers: [],
     add: "",
     histo: [],
+    institution: {},
   };
 
   componentDidMount() {
@@ -25,15 +26,26 @@ class OneContact extends Component {
       .then((apiRes) => {
         this.setState({ contact: apiRes.data });
         this.buildCalls(apiRes.data.calls);
-
-        if (apiRes.data.histo.length > 0) this.formatHisto(apiRes.data.histo);
-        if (apiRes.data.volunteers.length > 0)
-          this.getVolunteer(apiRes.data.volunteers);
+        if (apiRes.data.institution)
+          this.buildInstitution(apiRes.data.institution);
+        if (apiRes.data.histo) this.formatHisto(apiRes.data.histo);
+        if (apiRes.data.volunteers) this.getVolunteer(apiRes.data.volunteers);
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
+  buildInstitution = (data) => {
+    apiHandler
+      .getOne("/api/institutions/", data)
+      .then((apiRes) => {
+        this.setState({ institution: apiRes.data });
+      })
+      .catch((apiErr) => {
+        console.log(apiErr);
+      });
+  };
 
   buildCalls = (data) => {
     for (const [index, item] of data.entries()) {
@@ -194,11 +206,8 @@ class OneContact extends Component {
 
   formatHisto(histo) {
     const histArr = [];
-
     for (const i of histo.split("***")) {
-      // console.log(i.split("["));
-      // i.replace("/","DDDDD")
-      histArr.unshift(i);
+      histArr.unshift([i.split("[")]);
     }
     this.setState({ histo: histArr });
   }
@@ -211,70 +220,154 @@ class OneContact extends Component {
       <div className="container">
         <div className="contact">
           <div className="contact-info">
-            <h2>{this.state.contact.name}</h2>
-            <p>{this.state.contact.comment}</p>
-            <p>Contact : {this.state.contact.contact}</p>
-            <p>
-              {this.state.contact.frequency} et {this.state.contact.type}
-            </p>
-            <p>
-              Dernier call{" "}
-              {this.state.contact.lastcall
-                ? this.formatDate(this.state.contact.lastcall)
-                : ""}
-            </p>
-
-            <ul>
-              <h3>Bénévoles</h3>
-              <li>
-                {this.state.contact.volunteer_1
-                  ? this.state.contact.volunteer_1
-                  : ""}
-              </li>
-              <li>
-                {this.state.contact.volunteer_2
-                  ? this.state.contact.volunteer_2
-                  : ""}
-              </li>
-              {this.state.volunteers.map((volunteer) => (
-                <li key={volunteer}>{volunteer.split("@")[0]}</li>
-              ))}
-            </ul>
-            {this.state.volunteers.includes(this.context.user.email) ? (
-              <span onClick={() => this.removeVolunteer()}>
-                Ne plus être bénévole
-              </span>
-            ) : (
-              <span onClick={() => this.addVolunteer()}>Devenir bénévole</span>
-            )}
-            <span onClick={() => this.addCall()}> Ajouter un appel</span>
-            <div>{this.state.addCall}</div>
-          </div>
-          <div className="contact-histo">
-            <h3>Historique</h3>
-            {this.state.calls &&
-              this.state.calls.map((call) => (
-                <div key={call._id}>
-                  <div>{this.formatDate(call.created)}</div>
-                  <div>{call.creator.split("@")[0]}</div>
-                  <div>{call.comment}</div>
-                  <div>{call.last}</div>
-                  {call.creator === this.context.user.email ||
-                  this.context.user.isMob === true ? (
-                    <span onClick={() => this.updateCall(call._id)}>
-                      Modifier cet appel
-                    </span>
+            <div className="contact-bio">
+              <h2>{this.state.contact.name}</h2>
+              <h4>
+                <i className="fas fa-phone"></i> /{" "}
+                <i className="fas fa-envelope"></i> :{" "}
+                {this.state.contact.contact}
+              </h4>
+              <div className="contact-institution">
+                <p>{this.state.institution.name}</p>
+                <p>
+                  {this.state.institution.postal_code}&nbsp;
+                  {this.state.institution.city}{" "}
+                  {this.state.institution.departement}
+                </p>
+              </div>
+            </div>
+            <div className="contact-details">
+              <h4>Fréquence de contact : {this.state.contact.frequency}</h4>
+              {this.state.contact.comment ? (
+                <p>{this.state.contact.comment}</p>
+              ) : (
+                ""
+              )}
+              <ul>
+                {this.state.contact.volunteer_1 ||
+                this.state.contact.volunteer_2 ||
+                this.state.volunteers.length > 0 ? (
+                  <h4 style={{ marginTop: "10px" }}>Bénévole(s)</h4>
+                ) : (
+                  <p style={{ marginTop: "10px" }}>
+                    Il n'y a aucun·e bénévole en contact régulier avec{" "}
+                    {this.state.contact.name}
+                  </p>
+                )}
+                <li>
+                  {this.state.contact.volunteer_1 ? (
+                    <>
+                      {" "}
+                      <i
+                        style={{ marginRight: "8px" }}
+                        className="fas fa-user"
+                      ></i>
+                      {this.state.contact.volunteer_1}
+                    </>
                   ) : (
                     ""
                   )}
+                </li>
+                <li>
+                  {this.state.contact.volunteer_2 ? (
+                    <>
+                      {" "}
+                      <i
+                        style={{ marginRight: "8px" }}
+                        className="fas fa-user"
+                      ></i>
+                      {this.state.contact.volunteer_2}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </li>
+                {this.state.volunteers.map((volunteer) => (
+                  <li key={volunteer}>
+                    <i
+                      style={{ marginRight: "8px" }}
+                      className="fas fa-user"
+                    ></i>{" "}
+                    {volunteer.split("@")[0]}{" "}
+                    {volunteer === this.context.user.email ? (
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => this.removeVolunteer()}
+                      >
+                        (me désabonner)
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {this.state.volunteers.includes(this.context.user.email) ? (
+                ""
+              ) : (
+                <span
+                  style={{ marginTop: "10px" }}
+                  className="btn small"
+                  onClick={() => this.addVolunteer()}
+                >
+                  Je m'abonne !
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="contact-histo">
+            <h3 className="date-call" style={{ marginBottom: "10px" }}>
+              Dernier appel :{" "}
+              {this.state.contact.lastcall
+                ? this.formatDate(this.state.contact.lastcall)
+                : "aucun appel n'a encore été passé"}
+            </h3>
+            <span className="btn red" onClick={() => this.addCall()}>
+              {" "}
+              Ajouter un appel
+            </span>
+            <div>{this.state.addCall}</div>
+            <h3 style={{ marginTop: "10px" }}>Historique des appels</h3>
+            <div className="histo-lists">
+              {this.state.calls &&
+                this.state.calls.map((call) => (
+                  <div style={{ marginBottom: "20px" }} key={call._id}>
+                    <h4>{this.formatDate(call.created)}</h4>
+                    <div>Bénévole : {call.creator.split("@")[0]}</div>
+                    <div>Durée : {call.last}</div>
+                    <div>Commentaire : {call.comment}</div>
+                    <div>
+                      {" "}
+                      {call.creator === this.context.user.email ||
+                      this.context.user.isMob === true ? (
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => this.updateCall(call._id)}
+                        >
+                          Editer <i className="far fa-edit"></i>
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                ))}
+              {this.state.histo.map((onecall) => (
+                <div className="histo-box" key={onecall}>
+                  {onecall.map((calldetail) => (
+                    <div key={calldetail}>
+                      <h4>{calldetail[0]}</h4>
+                      <p>{calldetail[1]}</p>
+                      <p>{calldetail[2]}</p>
+                      <p>{calldetail[3]}</p>
+                      <p>{calldetail[4]}</p>
+                      <p>{calldetail[5]}</p>
+                    </div>
+                  ))}
+                  <br />
                 </div>
               ))}
-            {this.state.histo.map((histo) => (
-              <div key={histo}>
-                <div className="histo-box">{histo}</div>
-                <br />
-              </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

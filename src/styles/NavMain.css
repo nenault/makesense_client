@@ -5,6 +5,11 @@
   align-items: center;
   padding: 20px;
   height: 70px;
+  margin-top: 20px;
+}
+
+.logo-nav {
+  width: 12vw;
 }
 
 .NavMain .nav-list {

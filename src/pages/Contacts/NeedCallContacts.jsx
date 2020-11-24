@@ -87,7 +87,7 @@ class NeedCallContacts extends Component {
       (contact) =>
         contact.needcall === true &&
         contact.isActive === true &&
-        contact.frequency != "eMail : Pas de limitation"
+        contact.type != "eMail"
     );
     this.setState({ searchContacts: needCallContacts });
   }
@@ -115,8 +115,10 @@ class NeedCallContacts extends Component {
       return <div>Loading</div>;
     }
     return (
-      <div>
-        <h2>Les contacts qui doivent être appelés</h2>
+      <div className="contacts-needcall">
+        <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+          {this.state.searchContacts.length} contacts attendent nos appels
+        </h3>
         <SearchBar handleSearch={this.search} />
         <table>
           <thead>

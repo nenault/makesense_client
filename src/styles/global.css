@@ -18,14 +18,33 @@ ul {
 }
 
 h1,
-h2,
-h3 {
+h2 {
   color: #196c84 !important;
   font-weight: 900 !important;
 }
 
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 1.375em;
+  line-height: 1.4;
+  font-family: "Raleway", sans-serif;
+  font-weight: 800;
+}
+
+.date-call {
+  color: #e36164 !important;
+}
+
 body {
   width: 100vw;
+}
+
+.page {
+  width: 100vw;
+  padding: 30px;
 }
 
 .container {
@@ -45,18 +64,45 @@ body {
   width: 40vw;
 }
 
+.contact-bio {
+  background-color: #fff20d;
+  padding: 20px;
+}
+
+.contact-details {
+  padding: 10px;
+}
+
 .contact-histo {
   width: 40vw;
+  padding: 20px;
 }
 
 .histo-box {
   width: 40vw;
 }
 
+.histo-lists {
+  padding: 20px;
+}
+
 .contacts-admin {
   display: flex;
-  /* width: 80vw; */
-  justify-content: space-around;
+  width: 80vw;
+  justify-content: space-between;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+}
+
+.contacts-home {
+  display: flex;
+  width: 80vw;
+  justify-content: space-between;
 }
 
 .contacts-active {
@@ -67,15 +113,38 @@ body {
   width: 30vw;
 }
 
+.contacts-mycontacts {
+  margin-bottom: 40px;
+  /* align-self: flex-start; */
+}
+
+.contacts-needcall {
+  width: 40vw;
+  margin-right: 80px;
+}
+
+.contacts-needwrite {
+  width: 40vw;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 70vw;
+  width: 100vw;
   background-color: #fff20d;
   height: 70vh;
   justify-content: center;
-  border-radius: 10%;
+  /* border-radius: 10%; */
+}
+
+.create-call {
+  margin-top: 20px;
+}
+
+.compte-rendu {
+  width: 100%;
+  padding: 10px;
 }
 
 .btn {
@@ -96,8 +165,22 @@ body {
   border-radius: 3em;
 }
 
+.btn:hover {
+  background-color: #08272e;
+  border-color: #08272e;
+}
+
+.small {
+  font-size: 1em;
+}
+
 .red {
   background-color: #e36164;
+}
+
+.red:hover {
+  background-color: #df4b4f;
+  border-color: #df4b4f;
 }
 
 .register {
@@ -107,9 +190,15 @@ body {
   font-size: 16px;
 }
 
+.search {
+  width: 60%;
+  border: 0px;
+}
+
 .input {
   border: 0px;
   margin: 10px;
+  padding: 8px;
 }
 
 table {
@@ -133,7 +222,11 @@ table tr {
 }
 
 tr:nth-child(even) {
-  background-color: rgb(251, 243, 12, 0.2);
+  background-color: #f8f8f8;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
 }
 
 table th,
@@ -146,8 +239,9 @@ table th {
   font-size: 0.85em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background-color: #ec6363;
+  background-color: #fff20d;
   font-weight: bold;
+  color: #196c84;
 }
 
 @media screen and (max-width: 600px) {
@@ -197,4 +291,9 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
+}
+
+.institutions {
+  width: 90vw;
+  padding: 20px;
 }

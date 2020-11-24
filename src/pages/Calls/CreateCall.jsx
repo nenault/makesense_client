@@ -10,7 +10,7 @@ class CreateCall extends Component {
 
   render() {
     return (
-      <div>
+      <div className="create-call">
         <FormCall handleCall={this.addCall} contact={this.props.contact} />
       </div>
     );

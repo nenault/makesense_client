@@ -22,10 +22,13 @@ const NavMain = (props) => {
   return (
     <nav className="NavMain">
       <NavLink exact to="/">
-        <h3 className="logo">Makesense</h3>
+        <img className="logo-nav"
+          src="https://s3-eu-west-1.amazonaws.com/makesense.org/uploads/20200528115620/vRecurso-91.png"
+          alt="logo"
+        />
       </NavLink>
       <ul className="nav-list">
-      {context.isMob && (
+        {context.isMob && (
           <React.Fragment>
             <li>
               <NavLink to="/contacts">Contacts</NavLink>
@@ -37,7 +40,7 @@ const NavMain = (props) => {
               <NavLink to="/institutions">Etablissements</NavLink>
             </li>
           </React.Fragment>
-        )} 
+        )}
         {context.isLoggedIn && (
           <React.Fragment>
             {/* <li>

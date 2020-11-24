@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 class Institutions extends Component {
   state = {
     institutions: [],
+    departement: "Ain",
   };
 
   componentDidMount() {
@@ -20,10 +21,19 @@ class Institutions extends Component {
 
   deleteOne(id) {
     apiHandler
-      .deleteOne("/api/contacts/", id)
+      .deleteOne("/api/institutions/", id)
       .then((apiRes) => this.componentDidMount())
       .catch((apiErr) => console.log(apiErr));
   }
+
+  handleChange = (event) => {
+    // const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({
+      departement: value,
+    });
+  };
 
   render() {
     if (!this.state.institutions) {
@@ -31,7 +41,7 @@ class Institutions extends Component {
     }
 
     const filteredDep = this.state.institutions.filter(
-      (institution) => institution.departement === "Ain"
+      (institution) => institution.departement === this.state.departement
     );
     // const depList  = [...new Set(array)];
 
@@ -40,16 +50,114 @@ class Institutions extends Component {
     //   depArr.push(item.departement);
     // }
 
-    const depList = ['Ain', 'Aisne', 'Allier', 'Alpes-de-Haute-Provence', 'Hautes-Alpes', 'Alpes-Maritimes', 'Ardèche', 'Ardennes', 'Ariège', 'Aube', 'Aude', 'Aveyron', 'Bouches-du-Rhône', 'Calvados', 'Cantal', 'Charente', 'Charente-Maritime', 'Cher', 'Corrèze', 'Corse', 'Côte-d\'Or', 'Côtes-d\'Armor', 'Creuse', 'Dordogne', 'Gironde', 'Doubs', 'Drôme', 'Eure', 'Eure-et-Loir', 'Finistère', 'Gard', 'Haute-Garonne', 'Gers', 'Hérault', 'Ille-et-Vilaine', 'Indre', 'Indre-et-Loire', 'Isère', 'Jura', 'Landes', 'Loir-et-Cher', 'Loire', 'Haute-Loire', 'Loire-Atlantique', 'Loiret', 'Lot', 'Lot-et-Garonne', 'Lozère', 'Maine-et-Loire', 'Manche', 'Marne', 'Haute-Marne', 'Mayenne', 'Meurthe-et-Moselle', 'Meuse', 'Morbihan', 'Moselle', 'Nièvre', 'Nord', 'Oise', 'Orne', 'Pas-de-Calais', 'Puy-de-Dôme', 'Pyrénées-Atlantiques', 'Hautes-Pyrénées', 'Pyrénées-Orientales', 'Bas-Rhin', 'Haut-Rhin', 'Rhône', 'Haute-Saône', 'Saône-et-Loire', 'Sarthe', 'Savoie', 'Haute-Savoie', 'Paris', 'Seine-Maritime', 'Seine-et-Marne', 'Yvelines', 'Deux-Sèvres', 'Somme', 'Tarn', 'Tarn-et-Garonne', 'Var', 'Vaucluse', 'Vendée', 'Vienne', 'Haute-Vienne', 'Vosges', 'Yonne', 'Territoire de Belfort', 'Essonne', 'Hauts-de-Seine', 'Seine-St-Denis', 'Val-de-Marne', 'Val-D\'Oise', 'Guadeloupe', 'Martinique', 'Guyane', 'La Réunion']
-
-    // console.log(depList);
+    const depList = [
+      "Ain",
+      "Aisne",
+      "Allier",
+      "Alpes-de-Haute-Provence",
+      "Hautes-Alpes",
+      "Alpes-Maritimes",
+      "Ardèche",
+      "Ardennes",
+      "Ariège",
+      "Aube",
+      "Aude",
+      "Aveyron",
+      "Bouches-du-Rhône",
+      "Calvados",
+      "Cantal",
+      "Charente",
+      "Charente-Maritime",
+      "Cher",
+      "Corrèze",
+      "Corse",
+      "Côte-d'Or",
+      "Côtes-d'Armor",
+      "Creuse",
+      "Dordogne",
+      "Gironde",
+      "Doubs",
+      "Drôme",
+      "Eure",
+      "Eure-et-Loir",
+      "Finistère",
+      "Gard",
+      "Haute-Garonne",
+      "Gers",
+      "Hérault",
+      "Ille-et-Vilaine",
+      "Indre",
+      "Indre-et-Loire",
+      "Isère",
+      "Jura",
+      "Landes",
+      "Loir-et-Cher",
+      "Loire",
+      "Haute-Loire",
+      "Loire-Atlantique",
+      "Loiret",
+      "Lot",
+      "Lot-et-Garonne",
+      "Lozère",
+      "Maine-et-Loire",
+      "Manche",
+      "Marne",
+      "Haute-Marne",
+      "Mayenne",
+      "Meurthe-et-Moselle",
+      "Meuse",
+      "Morbihan",
+      "Moselle",
+      "Nièvre",
+      "Nord",
+      "Oise",
+      "Orne",
+      "Pas-de-Calais",
+      "Puy-de-Dôme",
+      "Pyrénées-Atlantiques",
+      "Hautes-Pyrénées",
+      "Pyrénées-Orientales",
+      "Bas-Rhin",
+      "Haut-Rhin",
+      "Rhône",
+      "Haute-Saône",
+      "Saône-et-Loire",
+      "Sarthe",
+      "Savoie",
+      "Haute-Savoie",
+      "Paris",
+      "Seine-Maritime",
+      "Seine-et-Marne",
+      "Yvelines",
+      "Deux-Sèvres",
+      "Somme",
+      "Tarn",
+      "Tarn-et-Garonne",
+      "Var",
+      "Vaucluse",
+      "Vendée",
+      "Vienne",
+      "Haute-Vienne",
+      "Vosges",
+      "Yonne",
+      "Territoire de Belfort",
+      "Essonne",
+      "Hauts-de-Seine",
+      "Seine-St-Denis",
+      "Val-de-Marne",
+      "Val-D'Oise",
+      "Guadeloupe",
+      "Martinique",
+      "Guyane",
+      "La Réunion",
+    ];
 
     return (
-      <div>
-        <Link to={"/institutions/create"}>Create</Link>
-
-        <h2>Institutions</h2>
-
+      <div className="institutions">
+        <h1>Les établissements</h1>
+        <Link className="btn red" to={"/institutions/create"}>
+          Ajouter un établissement
+        </Link>
         <div className="form-group">
           <label className="label" htmlFor="departement">
             Département
@@ -72,13 +180,15 @@ class Institutions extends Component {
         <table>
           <thead>
             <tr>
-              <th>code</th>
-              <th>type call</th>
-              <th>name</th>
-              <th>groupe</th>
+              <th>Code établissement</th>
+              <th>Type</th>
+              <th>Nom</th>
+              <th>Groupe</th>
               <th>CP</th>
-              <th>city</th>
-              <th>département</th>
+              <th>Ville</th>
+              <th>Département</th>
+              <th>Editer</th>
+              <th>Supprimer</th>
             </tr>
           </thead>
           <tbody>
@@ -92,14 +202,16 @@ class Institutions extends Component {
                 <td>{institution.city}</td>
                 <td>{institution.departement}</td>
                 <td>
-                  <Link to={`/contacts/${institution._id}/edit`}>update</Link>
+                  <Link to={`/institutions/${institution._id}/edit`}>
+                    <i className="fas fa-edit"></i>
+                  </Link>
                 </td>
                 <td>
                   <Link
                     to={this.props}
                     onClick={() => this.deleteOne(institution._id)}
                   >
-                    delete
+                    <i className="fas fa-backspace"></i>
                   </Link>
                 </td>
               </tr>

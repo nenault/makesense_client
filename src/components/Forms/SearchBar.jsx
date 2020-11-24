@@ -19,8 +19,7 @@ export default class SearchBar extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Search</h2>
+      <div className="search-bar">
         <form className="Form">
           <input
             id="search"
@@ -28,6 +27,7 @@ export default class SearchBar extends Component {
             className="search"
             type="text"
             name="search"
+            placeholder="Chercher un contact..."
             value={this.state.search}
             onChange={this.handleChange}
           />

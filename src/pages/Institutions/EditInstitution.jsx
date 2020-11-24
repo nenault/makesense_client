@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import FormInstitution from "../../components/Forms/FormInstitution";
 
-function EditInstitution() {
-    return (
-        <div>
-            
-        </div>
-    )
+function EditInstitution(props) {
+  return (
+    <div>
+      <FormInstitution action="edit" id={props.match.params.id} />
+    </div>
+  );
 }
 
-export default EditInstitution
+export default EditInstitution;

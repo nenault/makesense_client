@@ -36,7 +36,11 @@ class FormCall extends Component {
     const name = event.target.name;
     const value = event.target.value;
 
-    this.setState({ [name]: value, creator: this.context.user.email, creatorId: this.context.user._id });
+    this.setState({
+      [name]: value,
+      creator: this.context.user.email,
+      creatorId: this.context.user._id,
+    });
   };
 
   handleSubmit = (event) => {
@@ -79,12 +83,13 @@ class FormCall extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label className="label" htmlFor="comment">
-                comment
-              </label>
-              <input
+                Compte rendu de l'appel
+              </label><br />
+              <textarea className="compte-rendu"
                 id="comment"
                 type="text"
                 name="comment"
+                rows="8" 
                 value={this.state.comment}
                 onChange={this.handleChange}
               />
@@ -92,9 +97,9 @@ class FormCall extends Component {
 
             <div className="form-group">
               <label className="label" htmlFor="last">
-                last
-              </label>
-              <input
+              Durée de l'appel
+              </label><br />
+              <input style={{ padding: "8px" }}
                 id="last"
                 type="text"
                 name="last"
@@ -103,7 +108,9 @@ class FormCall extends Component {
               />
             </div>
 
-            <button>Add call</button>
+            <button className="btn small" style={{ marginTop: "10px" }}>
+              Valider
+            </button>
           </form>
         </div>
       </div>

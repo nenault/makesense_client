@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import FormInstitution from "../../components/Forms/FormInstitution";
 
 function CreateInstitution() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return (
+    <div>
+      <FormInstitution />
+    </div>
+  );
 }
 
-export default CreateInstitution
+export default CreateInstitution;
