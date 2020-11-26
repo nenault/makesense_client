@@ -13,7 +13,7 @@ class NeedCallContacts extends Component {
     apiHandler
       .getAll("/api/contacts")
       .then((apiRes) => {
-        this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
+        this.getNeedCallContacts(apiRes.data);
         this.isCallNeeded();
       })
       .catch((apiErr) => {
@@ -40,7 +40,8 @@ class NeedCallContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  // this.setState({ contacts: apiRes.data });
+                  this.getNeedCallContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -56,7 +57,7 @@ class NeedCallContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  this.getNeedCallContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -72,7 +73,7 @@ class NeedCallContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  this.getNeedCallContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -82,14 +83,19 @@ class NeedCallContacts extends Component {
         }
       }
     }
+  }
 
-    const needCallContacts = this.state.contacts.filter(
+  getNeedCallContacts(contacts) {
+    const needCallContacts = contacts.filter(
       (contact) =>
         contact.needcall === true &&
         contact.isActive === true &&
         contact.type != "eMail"
     );
-    this.setState({ searchContacts: needCallContacts });
+    this.setState({
+      contacts: needCallContacts,
+      searchContacts: needCallContacts,
+    });
   }
 
   formatDate(date) {
@@ -117,9 +123,11 @@ class NeedCallContacts extends Component {
     return (
       <div className="contacts-needcall">
         <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
-          {this.state.searchContacts.length} contacts attendent nos appels
+          {this.state.searchContacts.length} contact
+          {this.state.searchContacts.length > 1 ? "s" : ""} attend
+          {this.state.searchContacts.length > 1 ? "ent" : ""} nos appels
         </h3>
-        <SearchBar handleSearch={this.search} />
+        <SearchBar handleSearch={this.search} type="contact" />
         <table>
           <thead>
             <tr>

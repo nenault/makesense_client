@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
+import SearchBar from "../../components/Forms/SearchBar";
 
 class Users extends Component {
   state = {
     users: [],
+    searchUsers: [],
   };
 
   componentDidMount() {
     apiHandler
       .getAll("/api/users")
       .then((apiRes) => {
-        this.setState({ users: apiRes.data });
+        this.setState({ users: apiRes.data, searchUsers: apiRes.data });
       })
       .catch((apiErr) => {
         console.log(apiErr);
@@ -27,14 +29,14 @@ class Users extends Component {
 
   upgrade(id) {
     apiHandler
-      .updateOne("/api/users/" + id, {isMob : true})
+      .updateOne("/api/users/" + id, { isMob: true })
       .then((apiRes) => this.componentDidMount())
       .catch((apiErr) => console.log(apiErr));
   }
 
   downgrade(id) {
     apiHandler
-      .updateOne("/api/users/" + id, {isMob : false})
+      .updateOne("/api/users/" + id, { isMob: false })
       .then((apiRes) => this.componentDidMount())
       .catch((apiErr) => console.log(apiErr));
   }
@@ -46,12 +48,19 @@ class Users extends Component {
     return formatedDate;
   }
 
+  search = (searchUser) => {
+    const copyUsers = [...this.state.users];
+    const filteredUsers = copyUsers.filter((user) =>
+      user.email.toLowerCase().includes(searchUser.search.toLowerCase())
+    );
+    this.setState({ searchUsers: filteredUsers });
+  };
 
   render() {
     const mobs = [];
     const volunteers = [];
 
-    for (const [index, item] of this.state.users.entries()) {
+    for (const [index, item] of this.state.searchUsers.entries()) {
       if (item.isMob === true) {
         mobs.push(item);
       } else {
@@ -60,74 +69,91 @@ class Users extends Component {
     }
 
     return (
-      <div>
-        <h2>Mobs</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Membre depuis</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {mobs.map((user) => (
-              <tr key={user._id}>
-                <td>{user.email}</td>
-                <td>{this.formatDate(user.created)}</td>
-                <td>
-                  <Link
-                    to={this.props}
-                    onClick={() => this.downgrade(user._id)}
-                  >
-                    Retirer mob
-                  </Link>
-                </td>
-                <td>
-                  <Link
-                    to={this.props}
-                    onClick={() => this.deleteOne(user._id)}
-                  >
-                    Supprimer
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <h2>Bénévoles</h2>
-        <table>
-          <thead>
-            <tr>
-            <th>Email</th>
-              <th>Membre depuis</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {volunteers.map((user) => (
-              <tr key={user._id}>
-                <td>{user.email}</td>
-                <td>{this.formatDate(user.created)}</td>
-                <td>
-                  <Link to={this.props} onClick={() => this.upgrade(user._id)}>
-                    Devenir mob
-                  </Link>
-                </td>
-                <td>
-                  <Link
-                    to={this.props}
-                    onClick={() => this.deleteOne(user._id)}
-                  >
-                    Supprimer
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="page">
+        <h1>Les bénévoles</h1>
+        <div className="users-list">
+          <div className="users-mobs">
+            <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+              {mobs.length} mob{mobs.length > 1 ? "s" : ""}
+            </h3>
+            <SearchBar handleSearch={this.search} type="bénévole" />
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Email</th>
+                  <th scope="col">Membre depuis</th>
+                  <th scope="col">Retirer mob</th>
+                  <th scope="col">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mobs.map((user) => (
+                  <tr key={user._id}>
+                    <td scope="row" data-label="Email">{user.email}</td>
+                    <td data-label="Depuis">{this.formatDate(user.created)}</td>
+                    <td data-label="Retirer mob">
+                      <Link
+                        to={this.props}
+                        onClick={() => this.downgrade(user._id)}
+                      >
+                        <i className="fas fa-user-times"></i>
+                      </Link>
+                    </td>
+                    <td data-label="Supprimer">
+                      <Link
+                        to={this.props}
+                        onClick={() => this.deleteOne(user._id)}
+                      >
+                        <i className="fas fa-backspace"></i>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="users-volunteers">
+            <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
+              {volunteers.length} participant·e
+              {volunteers.length > 1 ? "·s" : ""}
+            </h3>
+            <SearchBar handleSearch={this.search} type="bénévole" />
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Email</th>
+                  <th scope="col">Membre depuis</th>
+                  <th scope="col">Nommer mob</th>
+                  <th scope="col">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {volunteers.map((user) => (
+                  <tr key={user._id}>
+                    <td scope="row" data-label="Email">{user.email}</td>
+                    <td data-label="Depuis">{this.formatDate(user.created)}</td>
+                    <td data-label="Nommer mob">
+                      <Link
+                        to={this.props}
+                        onClick={() => this.upgrade(user._id)}
+                      >
+                        <i className="fas fa-user-plus"></i>
+                      </Link>
+                    </td>
+                    <td data-label="Supprimer">
+                      <Link
+                        to={this.props}
+                        onClick={() => this.deleteOne(user._id)}
+                      >
+                        <i className="fas fa-backspace"></i>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
   }

@@ -22,8 +22,9 @@ const NavMain = (props) => {
   return (
     <nav className="NavMain">
       <NavLink exact to="/">
-        <img className="logo-nav"
-          src="https://s3-eu-west-1.amazonaws.com/makesense.org/uploads/20200528115620/vRecurso-91.png"
+        <img
+          className="logo-nav"
+          src="https://res.cloudinary.com/ddwcgukvk/image/upload/v1606295343/websitearecurso-19_b9ra6h.png"
           alt="logo"
         />
       </NavLink>
@@ -31,13 +32,19 @@ const NavMain = (props) => {
         {context.isMob && (
           <React.Fragment>
             <li>
-              <NavLink to="/contacts">Contacts</NavLink>
+              <NavLink to="/contacts">
+                <h4 style={{ color: "#196c84" }}>Contacts</h4>
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/users">Bénévoles</NavLink>
+              <NavLink to="/users">
+                <h4 style={{ color: "#196c84" }}>Bénévoles</h4>
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/institutions">Etablissements</NavLink>
+              <NavLink to="/institutions">
+                <h4 style={{ color: "#196c84" }}>Etablissements</h4>
+              </NavLink>
             </li>
           </React.Fragment>
         )}
@@ -49,7 +56,7 @@ const NavMain = (props) => {
               </NavLink>
             </li> */}
             <li>
-              <p onClick={handleLogout}>Me déconnecter</p>
+            <h4 style={{ color: "#e36164" }} onClick={handleLogout}>Me déconnecter</h4>
             </li>
           </React.Fragment>
         )}

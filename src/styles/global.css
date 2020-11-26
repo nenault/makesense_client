@@ -45,6 +45,9 @@ body {
 .page {
   width: 100vw;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .container {
@@ -101,8 +104,8 @@ body {
 
 .contacts-home {
   display: flex;
-  width: 80vw;
-  justify-content: space-between;
+  width: 90vw;
+  justify-content: space-evenly;
 }
 
 .contacts-active {
@@ -113,18 +116,32 @@ body {
   width: 30vw;
 }
 
+.users-list {
+  display: flex;
+  width: 80vw;
+  justify-content: space-evenly;
+}
+
+.users-mobs {
+  width: 30vw;
+}
+
+.users-volunteers {
+  width: 30vw;
+}
+
 .contacts-mycontacts {
-  margin-bottom: 40px;
-  /* align-self: flex-start; */
+  width: 30vw;
+  margin-right: 80px;
 }
 
 .contacts-needcall {
-  width: 40vw;
+  width: 30vw;
   margin-right: 80px;
 }
 
 .contacts-needwrite {
-  width: 40vw;
+  width: 30vw;
 }
 
 .form {
@@ -136,6 +153,23 @@ body {
   height: 70vh;
   justify-content: center;
   /* border-radius: 10%; */
+}
+
+.form-groups {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.label {
+  font-weight: bold;
 }
 
 .create-call {
@@ -191,14 +225,23 @@ body {
 }
 
 .search {
-  width: 60%;
+  width: 100%;
   border: 0px;
+}
+
+.search:focus {
+  outline: none;
 }
 
 .input {
   border: 0px;
-  margin: 10px;
+  margin: 10px 0px;
   padding: 8px;
+  width: 20vw;
+}
+
+select {
+  width: 20vw;
 }
 
 table {
@@ -244,7 +287,110 @@ table th {
   color: #196c84;
 }
 
+.logo-form {
+  width: 30vw;
+  margin-bottom: 50px;
+}
+
 @media screen and (max-width: 600px) {
+  .NavMain .nav-list {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .logo-nav {
+    width: 40vw;
+  }
+
+  .logo-form {
+    width: 80vw;
+    margin-bottom: 50px;
+  }
+
+  .contacts-home {
+    display: flex;
+    width: 90vw;
+    flex-direction: column;
+  }
+
+  .contacts-mycontacts {
+    margin-bottom: 20px;
+    width: 90vw;
+  }
+
+  .contacts-needcall {
+    width: 90vw;
+  }
+
+  .contacts-needwrite {
+    width: 90vw;
+  }
+
+  .contacts-admin {
+    display: flex;
+    width: 90vw;
+    flex-direction: column;
+  }
+
+  .contact {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-info {
+    width: 90vw;
+  }
+
+  .contact-histo {
+    width: 90vw;
+    padding: 20px;
+  }
+
+  .btn {
+    font-size: 1em;
+  }
+
+  table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .users-list {
+    display: flex;
+    width: 90vw;
+    flex-direction: column;
+  }
+
+  .users-mobs {
+    width: 90vw;
+  }
+
+  .users-volunteers {
+    width: 90vw;
+  }
+
+  .contacts-active {
+    width: 90vw;
+  }
+
+  .contacts-inactive {
+    width: 90vw;
+  }
+
+  .input {
+    width: 80vw;
+  }
+
   table {
     border: 0;
   }

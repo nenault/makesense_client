@@ -27,7 +27,7 @@ export default class SearchBar extends Component {
             className="search"
             type="text"
             name="search"
-            placeholder="Chercher un contact..."
+            placeholder={`Chercher un ${this.props.type}`}
             value={this.state.search}
             onChange={this.handleChange}
           />

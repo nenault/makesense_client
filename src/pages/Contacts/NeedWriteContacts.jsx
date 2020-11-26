@@ -13,7 +13,7 @@ class NeedWriteContacts extends Component {
     apiHandler
       .getAll("/api/contacts")
       .then((apiRes) => {
-        this.setState({ contacts: apiRes.data, searchContacts: apiRes.data });
+        this.getNeedWriteContacts(apiRes.data)
         this.isCallNeeded();
       })
       .catch((apiErr) => {
@@ -40,7 +40,7 @@ class NeedWriteContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  this.getNeedWriteContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -56,7 +56,7 @@ class NeedWriteContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  this.getNeedWriteContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -72,7 +72,7 @@ class NeedWriteContacts extends Component {
               apiHandler
                 .getAll("/api/contacts")
                 .then((apiRes) => {
-                  this.setState({ contacts: apiRes.data });
+                  this.getNeedWriteContacts(apiRes.data);
                 })
                 .catch((apiErr) => {
                   console.log(apiErr);
@@ -82,11 +82,16 @@ class NeedWriteContacts extends Component {
         }
       }
     }
+  }
 
-    const needCallContacts = this.state.contacts.filter(
+  getNeedWriteContacts(contacts) {
+    const needWriteContacts = contacts.filter(
       (contact) => contact.type === "eMail" && contact.isActive === true
     );
-    this.setState({ searchContacts: needCallContacts });
+    this.setState({
+      contacts: needWriteContacts,
+      searchContacts: needWriteContacts,
+    });
   }
 
   formatDate(date) {
@@ -114,23 +119,29 @@ class NeedWriteContacts extends Component {
     return (
       <div className="contacts-needwrite">
         <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
-          {this.state.searchContacts.length} contacts attendent nos mails
+          {this.state.searchContacts.length} contact
+          {this.state.searchContacts.length > 1 ? "s" : ""} attend
+          {this.state.searchContacts.length > 1 ? "ent" : ""} nos mails
         </h3>
-        <SearchBar handleSearch={this.search} />
+        <SearchBar handleSearch={this.search} type="contact"/>
         <table>
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Dernier<br/>mail</th>
+              <th scope="col">Nom</th>
+              <th scope="col">
+                Dernier
+                <br />
+                mail
+              </th>
             </tr>
           </thead>
           <tbody>
             {this.state.searchContacts.map((contact) => (
               <tr key={contact._id}>
-                <td>
+                <td scope="row" data-label="Nom">
                   <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
                 </td>
-                <td>
+                <td data-label="Dernier mail">
                   <Link to={`/contacts/${contact._id}/`}>
                     {" "}
                     {contact.lastcall

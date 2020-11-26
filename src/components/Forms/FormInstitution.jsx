@@ -181,116 +181,119 @@ class FormInstitution extends Component {
       <div>
         <div className="ItemForm-container">
           <form className="form" onSubmit={this.handleSubmit}>
-            <h2 className="title">Ajouter un établissement</h2>
+            <h2 className="title">{this.props.action === "edit" ? "Modifier" : "Ajouter"} un établissement</h2>
+            <div className="form-groups">
+              <div className="form-group">
+                <label className="label" htmlFor="code">
+                  Code établissement :&nbsp;
+                </label>
+                <input
+                  id="code"
+                  className="input"
+                  type="text"
+                  name="code"
+                  value={this.state.code}
+                  onChange={this.handleChange}
+                />
+              </div>
 
-            <div className="form-group">
-              <label className="label" htmlFor="code">
-                Code établissement
-              </label>
-              <input
-                id="code"
-                className="input"
-                type="text"
-                name="code"
-                value={this.state.code}
-                onChange={this.handleChange}
-              />
+              <div className="form-group">
+                <label className="label" htmlFor="type">
+                  Type d'établissement :&nbsp;
+                </label>
+
+                <select
+                  id="type"
+                  value={this.state.type}
+                  name="type"
+                  onChange={this.handleChange}
+                >
+                  <option value="EHPAD">EHPAD</option>
+                  <option value="Résidence">Résidence</option>
+                  <option value="SAD">SAD</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="label" htmlFor="name">
+                  Nom de l'établissement :&nbsp;
+                </label>
+                <input
+                  id="name"
+                  className="input"
+                  type="text"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="label" htmlFor="groupe">
+                  Groupe :&nbsp;
+                </label>
+                <input
+                  id="groupe"
+                  className="input"
+                  type="text"
+                  name="groupe"
+                  value={this.state.groupe}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="label" htmlFor="postal_code">
+                  Code postal :&nbsp;
+                </label>
+                <input
+                  id="postal_code"
+                  className="input"
+                  type="text"
+                  name="postal_code"
+                  value={this.state.postal_code}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="label" htmlFor="city">
+                  Ville :&nbsp;
+                </label>
+                <input
+                  id="city"
+                  className="input"
+                  type="text"
+                  name="city"
+                  value={this.state.city}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="label" htmlFor="departement">
+                  Département :&nbsp;
+                </label>
+
+                <select
+                  id="departement"
+                  value={this.state.departement}
+                  // String(this.state.departement[0])
+                  name="departement"
+                  onChange={this.handleChange}
+                >
+                  {depList.map((dep) => (
+                    <option key={dep} value={dep}>
+                      {dep}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div className="form-group">
-              <label className="label" htmlFor="type">
-                Type d'établissement
-              </label>
-
-              <select
-                id="type"
-                value={this.state.type}
-                name="type"
-                onChange={this.handleChange}
-              >
-                <option value="EHPAD">EHPAD</option>
-                <option value="Résidence">Résidence</option>
-                <option value="SAD">SAD</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="name">
-                Nom de l'établissement
-              </label>
-              <input
-                id="name"
-                className="input"
-                type="text"
-                name="name"
-                value={this.state.name}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="groupe">
-                Groupe
-              </label>
-              <input
-                id="groupe"
-                className="input"
-                type="text"
-                name="groupe"
-                value={this.state.groupe}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="postal_code">
-                Code postal
-              </label>
-              <input
-                id="postal_code"
-                className="input"
-                type="text"
-                name="postal_code"
-                value={this.state.postal_code}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="city">
-                Ville
-              </label>
-              <input
-                id="city"
-                className="input"
-                type="text"
-                name="city"
-                value={this.state.city}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="departement">
-                Département
-              </label>
-
-              <select
-                id="departement"
-                value={this.state.departement}
-                // String(this.state.departement[0])
-                name="departement"
-                onChange={this.handleChange}
-              >
-                {depList.map((dep) => (
-                  <option key={dep} value={dep}>
-                    {dep}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button className="btn red">Ajouter</button>
+            <button style={{ marginTop: "40px" }} className="btn red">
+            {this.props.action === "edit" ? "Modifier" : "Ajouter"}
+            </button>
           </form>
         </div>
       </div>

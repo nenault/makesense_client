@@ -51,12 +51,13 @@ class Home extends Component {
   render() {
     return (
       <div className="home page">
+       
+        <div className="contacts-home">
         {this.context.user && this.context.user.contacts.length > 0 ? (
           <Mycontacts />
         ) : (
           ""
         )}
-        <div className="contacts-home">
           <NeedCallContacts />
           <NeedWriteContacts />
         </div>

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
+import SearchBar from "../../components/Forms/SearchBar";
 
 class Institutions extends Component {
   state = {
     institutions: [],
+    searchInstitutions: [],
     departement: "Ain",
   };
 
@@ -12,7 +14,10 @@ class Institutions extends Component {
     apiHandler
       .getAll("/api/institutions")
       .then((apiRes) => {
-        this.setState({ institutions: apiRes.data });
+        this.setState({
+          institutions: apiRes.data,
+          searchInstitutions: apiRes.data,
+        });
       })
       .catch((apiErr) => {
         console.log(apiErr);
@@ -35,12 +40,23 @@ class Institutions extends Component {
     });
   };
 
+  search = (searchInstitution) => {
+    const copyInstitutions = [...this.state.institutions];
+
+    const filteredInstitutions = copyInstitutions.filter((institution) =>
+      institution.name
+        .toLowerCase()
+        .includes(searchInstitution.search.toLowerCase())
+    );
+    this.setState({ searchInstitutions: filteredInstitutions });
+  };
+
   render() {
     if (!this.state.institutions) {
       return <div>Loading</div>;
     }
 
-    const filteredDep = this.state.institutions.filter(
+    const filteredDep = this.state.searchInstitutions.filter(
       (institution) => institution.departement === this.state.departement
     );
     // const depList  = [...new Set(array)];
@@ -153,14 +169,18 @@ class Institutions extends Component {
     ];
 
     return (
-      <div className="institutions">
+      <div className="page institutions">
         <h1>Les établissements</h1>
-        <Link className="btn red" to={"/institutions/create"}>
+        <Link
+          style={{ marginBottom: "40px" }}
+          className="btn red"
+          to={"/institutions/create"}
+        >
           Ajouter un établissement
         </Link>
-        <div className="form-group">
+        <div style={{ marginBottom: "20px" }}>
           <label className="label" htmlFor="departement">
-            Département
+            Département :&nbsp;
           </label>
 
           <select
@@ -176,37 +196,39 @@ class Institutions extends Component {
             ))}
           </select>
         </div>
-
+        <SearchBar handleSearch={this.search} type="établissement"/>
         <table>
           <thead>
             <tr>
-              <th>Code établissement</th>
-              <th>Type</th>
-              <th>Nom</th>
-              <th>Groupe</th>
-              <th>CP</th>
-              <th>Ville</th>
-              <th>Département</th>
-              <th>Editer</th>
-              <th>Supprimer</th>
+              <th scope="col">Code établissement</th>
+              <th scope="col">Type</th>
+              <th scope="col">Nom</th>
+              <th scope="col">Groupe</th>
+              <th scope="col">CP</th>
+              <th scope="col">Ville</th>
+              <th scope="col">Département</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Supprimer</th>
             </tr>
           </thead>
           <tbody>
             {filteredDep.map((institution) => (
               <tr key={institution._id}>
-                <td>{institution.code}</td>
-                <td>{institution.type}</td>
-                <td>{institution.name}</td>
-                <td>{institution.groupe}</td>
-                <td>{institution.postal_code}</td>
-                <td>{institution.city}</td>
-                <td>{institution.departement}</td>
-                <td>
+                <td scope="row" data-label="Code">
+                  {institution.code}
+                </td>
+                <td data-label="Type">{institution.type}</td>
+                <td data-label="Nom">{institution.name}</td>
+                <td data-label="Groupe">{institution.groupe}</td>
+                <td data-label="Code postale">{institution.postal_code}</td>
+                <td data-label="Ville">{institution.city}</td>
+                <td data-label="Département">{institution.departement}</td>
+                <td data-label="Editer">
                   <Link to={`/institutions/${institution._id}/edit`}>
                     <i className="fas fa-edit"></i>
                   </Link>
                 </td>
-                <td>
+                <td data-label="Supprimer">
                   <Link
                     to={this.props}
                     onClick={() => this.deleteOne(institution._id)}

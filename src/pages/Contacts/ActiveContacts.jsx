@@ -93,38 +93,39 @@ class ActiveContacts extends Component {
     return (
       <div className="contacts-active">
         <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
-          Contacts actifs
+          {contacts.length} contact{contacts.length > 1 ? "s" : ""} actif
+          {contacts.length > 1 ? "s" : ""}
         </h3>
-        <SearchBar handleSearch={this.search} />
+        <SearchBar handleSearch={this.search} type="contact"/>
         <table>
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Dernier appel</th>
-              <th>Editer</th>
-              <th>Désactiver</th>
-              <th>Supprimer</th>
+              <th scope="col">Nom</th>
+              <th scope="col">Dernier appel</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Désactiver</th>
+              <th scope="col">Supprimer</th>
             </tr>
           </thead>
           <tbody>
             {contacts.map((contact) => (
               <tr key={contact._id}>
-                <td>
+                <td scope="row" data-label="Nom">
                   <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
                 </td>
-                <td>
+                <td data-label="Dernier appel">
                   <Link to={`/contacts/${contact._id}/`}>
                     {contact.lastcall
                       ? this.formatDate(contact.lastcall)
                       : "never"}
                   </Link>
                 </td>
-                <td>
+                <td data-label="Editer">
                   <Link to={`/contacts/${contact._id}/edit`}>
                     <i className="fas fa-edit"></i>
                   </Link>
                 </td>
-                <td>
+                <td data-label="Désactiver">
                   <Link
                     to={this.props}
                     onClick={() => this.disableOne(contact._id)}
@@ -132,7 +133,7 @@ class ActiveContacts extends Component {
                     <i className="fas fa-user-times"></i>
                   </Link>
                 </td>
-                <td>
+                <td data-label="Supprimer">
                   <Link
                     to={this.props}
                     onClick={() => this.deleteOne(contact._id)}

@@ -81,7 +81,7 @@ class FormCall extends Component {
       <div>
         <div className="ItemForm-container">
           <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
+            <div>
               <label className="label" htmlFor="comment">
                 Compte rendu de l'appel
               </label><br />
@@ -95,7 +95,7 @@ class FormCall extends Component {
               />
             </div>
 
-            <div className="form-group">
+            <div>
               <label className="label" htmlFor="last">
               Durée de l'appel
               </label><br />

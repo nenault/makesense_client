@@ -50,17 +50,13 @@ class FormSignin extends Component {
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
         >
-          <img
-            style={{
-              width: "30vw",
-              marginBottom: "50px",
-            }}
+          <img className="logo-form"
             src="https://s3-eu-west-1.amazonaws.com/makesense.org/uploads/20200827171359/vRecurso-16-8.png"
             alt="logo_reaction"
           />
-          <label htmlFor="email">Mon email</label>
+          <label className="label" htmlFor="email">Email</label>
           <input className="input" type="email" id="email" name="email" />
-          <label htmlFor="password">Mon mot de passe</label>
+          <label className="label" htmlFor="password">Mot de passe</label>
           <input
             className="input"
             type="password"

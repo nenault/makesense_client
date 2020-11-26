@@ -21,7 +21,7 @@ class Contacts extends Component {
     return (
       <div className="page">
       <h1>Les contacts</h1>
-        <Link className="btn red" to={"/contacts/create"}>
+        <Link style={{ marginBottom: "10px" }} className="btn red" to={"/contacts/create"}>
           Ajouter un contact
         </Link>
         <div className="contacts-admin">
