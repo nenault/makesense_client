@@ -144,6 +144,14 @@ body {
   width: 30vw;
 }
 
+.call-details {
+  display: flex;
+}
+
+.call-empty {
+  align-self: flex-end;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -386,6 +394,11 @@ table th {
   .contacts-inactive {
     width: 90vw;
   }
+
+  .call-details {
+    display: flex;
+    flex-direction: column;
+}
 
   .input {
     width: 80vw;

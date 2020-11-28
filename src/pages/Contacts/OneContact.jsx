@@ -21,6 +21,7 @@ class OneContact extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     apiHandler
       .getOne("/api/contacts/", this.props.match.params.id)
       .then((apiRes) => {
@@ -70,27 +71,47 @@ class OneContact extends Component {
   };
 
   addCallid = (call) => {
-    this.setState({ lastcall: Date.now() });
+    if (call.call.empty === false) {
+      this.setState({ lastcall: Date.now() });
 
-    apiHandler
-      .updateOne("/api/contacts/" + this.props.match.params.id, {
-        needcall: false,
-        lastcall: this.state.lastcall,
-        $push: { calls: { call: call.call._id } },
-      })
-      .then((apiRes) =>
-        apiHandler
-          .getOne("/api/contacts/", this.props.match.params.id)
-          .then((apiRes) => {
-            this.setState({ addCall: "", calls: [], contact: apiRes.data });
-            this.buildCalls(apiRes.data.calls);
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      )
+      apiHandler
+        .updateOne("/api/contacts/" + this.props.match.params.id, {
+          needcall: false,
+          lastcall: this.state.lastcall,
+          $push: { calls: { call: call.call._id } },
+        })
+        .then((apiRes) =>
+          apiHandler
+            .getOne("/api/contacts/", this.props.match.params.id)
+            .then((apiRes) => {
+              this.setState({ addCall: "", calls: [], contact: apiRes.data });
+              this.buildCalls(apiRes.data.calls);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        )
 
-      .catch((apiErr) => console.log(apiErr));
+        .catch((apiErr) => console.log(apiErr));
+    } else {
+      apiHandler
+        .updateOne("/api/contacts/" + this.props.match.params.id, {
+          $push: { calls: { call: call.call._id } },
+        })
+        .then((apiRes) =>
+          apiHandler
+            .getOne("/api/contacts/", this.props.match.params.id)
+            .then((apiRes) => {
+              this.setState({ addCall: "", calls: [], contact: apiRes.data });
+              this.buildCalls(apiRes.data.calls);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        )
+
+        .catch((apiErr) => console.log(apiErr));
+    }
   };
 
   updateCallId = (call) => {
@@ -212,6 +233,14 @@ class OneContact extends Component {
     this.setState({ histo: histArr });
   }
 
+  deleteCall(id) {
+    apiHandler
+      .deleteOne("/api/calls/", id)
+      .then((apiRes) => this.componentDidMount())
+      .catch((apiErr) => console.log(apiErr));
+  }
+
+
   render() {
     if (!this.state.contact) {
       return <div>Loading</div>;
@@ -310,17 +339,17 @@ class OneContact extends Component {
                   className="btn small"
                   onClick={() => this.addVolunteer()}
                 >
-                  Je m'abonne !
+                  Devenir un contact régulier
                 </span>
               )}
             </div>
           </div>
           <div className="contact-histo">
             <h3 className="date-call" style={{ marginBottom: "10px" }}>
-              Dernier appel :{" "}
+              Dernier contact :{" "}
               {this.state.contact.lastcall
                 ? this.formatDate(this.state.contact.lastcall)
-                : "aucun appel n'a encore été passé"}
+                : "aucun contact n'a encore eu lieu"}
             </h3>
             <span className="btn red" onClick={() => this.addCall()}>
               {" "}
@@ -332,20 +361,38 @@ class OneContact extends Component {
               {this.state.calls &&
                 this.state.calls.map((call) => (
                   <div style={{ marginBottom: "20px" }} key={call._id}>
-                    <h4>{this.formatDate(call.created)}</h4>
+                    <h4>
+                      {this.formatDate(call.created)}{" "}
+                      {call.empty === true ? "(pas de réponse)" : ""}
+                    </h4>
                     <div>Bénévole : {call.creator.split("@")[0]}</div>
-                    <div>Durée : {call.last}</div>
-                    <div>Commentaire : {call.comment}</div>
+                    {call.empty === true ? (
+                      ""
+                    ) : (
+                      <>
+                        <div>Durée : {call.last}</div>
+                        <div>Commentaire : {call.comment}</div>
+                      </>
+                    )}
+
                     <div>
                       {" "}
                       {call.creator === this.context.user.email ||
                       this.context.user.isMob === true ? (
-                        <span
-                          style={{ cursor: "pointer" }}
-                          onClick={() => this.updateCall(call._id)}
-                        >
-                          Editer <i className="far fa-edit"></i>
-                        </span>
+                        <>
+                          <span
+                            style={{ cursor: "pointer", marginRight:"6px" }}
+                            onClick={() => this.updateCall(call._id)}
+                          >
+                            Editer <i className="far fa-edit"></i>
+                          </span>
+                          {/* <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => this.deleteCall(call._id)}
+                          >
+                            Supprimer <i className="fas fa-backspace"></i>
+                          </span> */}
+                        </>
                       ) : (
                         ""
                       )}

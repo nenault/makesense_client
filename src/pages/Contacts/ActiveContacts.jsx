@@ -102,6 +102,7 @@ class ActiveContacts extends Component {
             <tr>
               <th scope="col">Nom</th>
               <th scope="col">Dernier appel</th>
+              <th scope="col">Fréquence</th>
               <th scope="col">Editer</th>
               <th scope="col">Désactiver</th>
               <th scope="col">Supprimer</th>
@@ -118,6 +119,11 @@ class ActiveContacts extends Component {
                     {contact.lastcall
                       ? this.formatDate(contact.lastcall)
                       : "never"}
+                  </Link>
+                </td>
+                <td data-label="Fréquence">
+                  <Link to={`/contacts/${contact._id}/`}>
+                  {contact.frequency}
                   </Link>
                 </td>
                 <td data-label="Editer">
