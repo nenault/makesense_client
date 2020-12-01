@@ -27,6 +27,8 @@ import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
 import EditUser from "./pages/Users/EditUser";
 
+import CreateVolunteer from "./components/Forms/FormVolunteer"
+
 function App() {
   return (
     <div className="App">
@@ -74,6 +76,9 @@ function App() {
         <ProtectedAdminRoute exact path="/users" component={Users} />
         <ProtectedAdminRoute exact path="/users/create" component={CreateUser} />
         <ProtectedAdminRoute exact path="/users/:id/edit" component={EditUser} />
+
+        <ProtectedAdminRoute exact path="/volunteers/create" component={CreateVolunteer} />
+
       </Switch>
     </div>
   );

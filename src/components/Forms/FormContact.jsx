@@ -10,8 +10,8 @@ class FormContact extends Component {
     name: "",
     contact: "",
     comment: "",
-    frequency: "",
-    type: "",
+    frequency: "Chaque jour",
+    type: "Téléphone",
     creator: "",
     institution_code: "",
   };
@@ -167,9 +167,6 @@ class FormContact extends Component {
                   name="frequency"
                   onChange={this.handleChange}
                 >
-                  <option value="-1" disabled>
-                    Select a frequency
-                  </option>
                   <option value="Chaque jour">Chaque jour</option>
                   <option value="1 fois par semaine">1 fois par semaine</option>
                   <option value="2 fois par semaine">2 fois par semaine</option>

@@ -10,6 +10,7 @@ class FormSignup extends Component {
   state = {
     email: "",
     password: "",
+    status: "",
   };
 
   handleChange = (event) => {
@@ -36,6 +37,7 @@ class FormSignup extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ status: "Cet email est déjà utilisé ou n'est pas autorisé" });
       });
   };
 
@@ -52,9 +54,21 @@ class FormSignup extends Component {
             src="https://s3-eu-west-1.amazonaws.com/makesense.org/uploads/20200827171359/vRecurso-16-8.png"
             alt="logo_reaction"
           />
-          <label className="label" htmlFor="email">Email</label>
+          <label className="label" htmlFor="email">
+            Email
+          </label>
           <input className="input" type="email" id="email" name="email" />
-          <label className="label" htmlFor="password">Mot de passe</label>
+          <span
+            style={{
+              fontWeight: "bold",
+              color:"#e36164"
+            }}
+          >
+            {this.state.status}
+          </span>
+          <label className="label" htmlFor="password">
+            Mot de passe
+          </label>
           <input
             className="input"
             type="password"

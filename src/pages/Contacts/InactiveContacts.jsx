@@ -99,7 +99,7 @@ class InactiveContacts extends Component {
           <thead>
             <tr>
               <th scope="col">Nom</th>
-              <th scope="col">Dernier appel</th>
+              <th scope="col">Dernier<br />appel</th>
               <th scope="col">Editer</th>
               <th scope="col">Activer</th>
               <th scope="col">Supprimer</th>

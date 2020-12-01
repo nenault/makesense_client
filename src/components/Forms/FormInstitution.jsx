@@ -5,12 +5,12 @@ import { withRouter } from "react-router-dom";
 class FormInstitution extends Component {
   state = {
     code: "",
-    type: "",
+    type: "EHPAD",
     name: "",
     groupe: "",
     postal_code: "",
     city: "",
-    departement: "",
+    departement: "Ain",
   };
 
   componentDidMount() {

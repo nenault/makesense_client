@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
 import SearchBar from "../../components/Forms/SearchBar";
+import Volunteers from "./Volunteers";
 
 class Users extends Component {
   state = {
@@ -71,6 +72,13 @@ class Users extends Component {
     return (
       <div className="page">
         <h1>Les bénévoles</h1>
+        <Link
+          style={{ marginBottom: "40px" }}
+          className="btn red"
+          to={"/volunteers/create"}
+        >
+          Ajouter un bénévole
+        </Link>
         <div className="users-list">
           <div className="users-mobs">
             <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
@@ -115,7 +123,7 @@ class Users extends Component {
           <div className="users-volunteers">
             <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
               {volunteers.length} participant·e
-              {volunteers.length > 1 ? "·s" : ""}
+              {volunteers.length > 1 ? "·s" : ""} inscrit·e{volunteers.length > 1 ? "·s" : ""}
             </h3>
             <SearchBar handleSearch={this.search} type="bénévole" />
             <table>
@@ -153,6 +161,7 @@ class Users extends Component {
               </tbody>
             </table>
           </div>
+          <Volunteers />
         </div>
       </div>
     );

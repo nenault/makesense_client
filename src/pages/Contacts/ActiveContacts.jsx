@@ -101,7 +101,7 @@ class ActiveContacts extends Component {
           <thead>
             <tr>
               <th scope="col">Nom</th>
-              <th scope="col">Dernier appel</th>
+              <th scope="col">Dernier<br />appel</th>
               <th scope="col">Fréquence</th>
               <th scope="col">Editer</th>
               <th scope="col">Désactiver</th>

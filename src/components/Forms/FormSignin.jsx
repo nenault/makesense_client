@@ -11,12 +11,12 @@ class FormSignin extends Component {
   state = {
     email: "",
     password: "",
+    status: "",
   };
 
   handleChange = (event) => {
     const key = event.target.name;
 
-    // You can test more if you have to handle different sorts of inputs.
     const value =
       event.target.type === "file"
         ? event.target.files[0]
@@ -38,7 +38,7 @@ class FormSignin extends Component {
       })
       .catch((error) => {
         console.log(error);
-        // Display error message here, if you set the state
+        this.setState({ status: "Email ou mot de passe incorrect" });
       });
   };
 
@@ -63,6 +63,14 @@ class FormSignin extends Component {
             id="password"
             name="password"
           />
+          <span
+            style={{
+              fontWeight: "bold",
+              color:"#e36164"
+            }}
+          >
+            {this.state.status}
+          </span>
           <button
             style={{
               marginTop: "50px",

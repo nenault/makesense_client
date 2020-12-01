@@ -13,6 +13,7 @@ function errorHandler(error) {
   throw error;
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   service,
 
