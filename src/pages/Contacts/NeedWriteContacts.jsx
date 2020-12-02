@@ -116,6 +116,9 @@ class NeedWriteContacts extends Component {
     if (!this.state.contacts) {
       return <div>Loading</div>;
     }
+
+    const randomOrder = this.state.searchContacts.sort(() => Math.random() - 0.5);
+
     return (
       <div className="contacts-needwrite">
         <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
@@ -136,7 +139,7 @@ class NeedWriteContacts extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.searchContacts.map((contact) => (
+            {randomOrder.map((contact) => (
               <tr key={contact._id}>
                 <td scope="row" data-label="Nom">
                   <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
@@ -146,7 +149,7 @@ class NeedWriteContacts extends Component {
                     {" "}
                     {contact.lastcall
                       ? this.formatDate(contact.lastcall)
-                      : "never"}
+                      : "Aucun appel"}
                   </Link>
                 </td>
               </tr>

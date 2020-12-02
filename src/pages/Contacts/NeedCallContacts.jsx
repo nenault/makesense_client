@@ -26,6 +26,27 @@ class NeedCallContacts extends Component {
       if (item.lastcall) {
         let lastcall = new Date(item.lastcall);
         let today = new Date();
+        const getHour = today.getHours();
+
+        if (
+          (getHour > 14 && item.time === "afternoon") ||
+          (getHour < 14 && item.time === "morning") ||
+          item.time === "all"
+        ) {
+          apiHandler
+            .updateOne("/api/contacts/" + item._id, {
+              isTime: true,
+            })
+            .then((apiRes) => {})
+            .catch((apiErr) => console.log(apiErr));
+        } else {
+          apiHandler
+            .updateOne("/api/contacts/" + item._id, {
+              isTime: false,
+            })
+            .then((apiRes) => {})
+            .catch((apiErr) => console.log(apiErr));
+        }
 
         let dateDiff = lastcall.getTime() - today.getTime();
         let days = Math.ceil(dateDiff / (1000 * 3600 * 24));
@@ -89,6 +110,7 @@ class NeedCallContacts extends Component {
     const needCallContacts = contacts.filter(
       (contact) =>
         contact.needcall === true &&
+        contact.isTime === true &&
         contact.isActive === true &&
         contact.type != "eMail"
     );
@@ -120,6 +142,11 @@ class NeedCallContacts extends Component {
     if (!this.state.contacts) {
       return <div>Loading</div>;
     }
+
+    const randomOrder = this.state.searchContacts.sort(
+      () => Math.random() - 0.5
+    );
+
     return (
       <div className="contacts-needcall">
         <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
@@ -133,11 +160,12 @@ class NeedCallContacts extends Component {
             <tr>
               <th scope="col">Nom</th>
               <th scope="col">Dernier Appel</th>
+              <th scope="col">Time</th>
               <th scope="col">Fréquence d'appel</th>
             </tr>
           </thead>
           <tbody>
-            {this.state.searchContacts.map((contact) => (
+            {randomOrder.map((contact) => (
               <tr key={contact._id}>
                 <td scope="row" data-label="Nom">
                   <Link to={`/contacts/${contact._id}/`}>{contact.name}</Link>
@@ -146,8 +174,11 @@ class NeedCallContacts extends Component {
                   <Link to={`/contacts/${contact._id}/`}>
                     {contact.lastcall
                       ? this.formatDate(contact.lastcall)
-                      : "never"}
+                      : "Aucun appel"}
                   </Link>
+                </td>
+                <td scope="row" data-label="Nom">
+                  <Link to={`/contacts/${contact._id}/`}>{contact.time}</Link>
                 </td>
                 <td data-label="Fréquence d'appel">
                   <Link to={`/contacts/${contact._id}/`}>

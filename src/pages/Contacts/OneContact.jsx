@@ -16,6 +16,8 @@ class OneContact extends Component {
     lastcall: "",
     volunteers: [],
     add: "",
+    time: "all",
+    isActive: "",
     histo: [],
     institution: {},
   };
@@ -25,7 +27,8 @@ class OneContact extends Component {
     apiHandler
       .getOne("/api/contacts/", this.props.match.params.id)
       .then((apiRes) => {
-        this.setState({ contact: apiRes.data });
+        this.setState({ contact: apiRes.data, isActive: apiRes.data.isActive });
+        this.getTime(apiRes.data);
         this.buildCalls(apiRes.data.calls);
         if (apiRes.data.institution)
           this.buildInstitution(apiRes.data.institution);
@@ -36,6 +39,12 @@ class OneContact extends Component {
         console.log(error);
       });
   }
+
+  getTime = (data) => {
+    if (data.time) {
+      this.setState({ time: data.time });
+    }
+  };
 
   buildInstitution = (data) => {
     apiHandler
@@ -138,6 +147,41 @@ class OneContact extends Component {
     });
   };
 
+  handleRadio = (event) => {
+    this.setState(
+      {
+        time: event.target.value,
+      },
+      () =>
+        apiHandler
+          .updateOne("/api/contacts/" + this.props.match.params.id, {
+            time: this.state.time,
+          })
+          .then((apiRes) => {
+            // console.log(apiRes);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    );
+  };
+
+  contact = (event) => {
+    this.setState(
+      {
+        isActive: !this.state.isActive,
+      },
+      () =>
+        apiHandler
+          .updateOne("/api/contacts/" + this.props.match.params.id, {
+            isActive: this.state.isActive,
+          })
+          .then((apiRes) => {})
+
+          .catch((apiErr) => console.log(apiErr))
+    );
+  };
+
   updateCall = (id) => {
     this.setState({
       addCall: (
@@ -219,6 +263,7 @@ class OneContact extends Component {
   };
 
   formatDate(date) {
+    // console.log(date);
     const getDate = date.split("T")[0].split("-");
     const formatedDate = `${getDate[2]}/${getDate[1]}/${getDate[0]}`;
     // return `${date[2]}-${date[1]}-${date[0]}`;
@@ -240,22 +285,22 @@ class OneContact extends Component {
       .catch((apiErr) => console.log(apiErr));
   }
 
-
   render() {
     if (!this.state.contact) {
       return <div>Loading</div>;
     }
+
     return (
       <div className="container">
         <div className="contact">
           <div className="contact-info">
             <div className="contact-bio">
               <h2>{this.state.contact.name}</h2>
-              <h4>
+              <h3>
                 <i className="fas fa-phone"></i> /{" "}
                 <i className="fas fa-envelope"></i> :{" "}
                 {this.state.contact.contact}
-              </h4>
+              </h3>
               <div className="contact-institution">
                 <p>{this.state.institution.name}</p>
                 <p>
@@ -263,6 +308,22 @@ class OneContact extends Component {
                   {this.state.institution.city}{" "}
                   {this.state.institution.departement}
                 </p>
+              </div>
+              <div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={this.state.isActive === true}
+                    onChange={this.contact}
+                  />
+                  <span
+                    onClick={() => this.contact}
+                    className="slider round"
+                  ></span>
+                </label>
+                {this.state.isActive === true
+                  ? "Cette personne souhaite être contactée"
+                  : "Cette personne ne souhaite plus être contactée"}
               </div>
             </div>
             <div className="contact-details">
@@ -272,7 +333,50 @@ class OneContact extends Component {
               ) : (
                 ""
               )}
-              <ul>
+              <div className="radio-list">
+                Le meilleur moment pour appeler :
+                <div>
+                  {" "}
+                  <input
+                    checked={this.state.time === "morning"}
+                    id="morning"
+                    type="radio"
+                    name="details"
+                    value="morning"
+                    onChange={this.handleRadio}
+                  />
+                  <label className="radio-item" htmlFor="morning">
+                    Le matin
+                  </label>
+                </div>
+                <div>
+                  <input
+                    checked={this.state.time === "afternoon"}
+                    id="afternoon"
+                    type="radio"
+                    name="details"
+                    value="afternoon"
+                    onChange={this.handleRadio}
+                  />
+                  <label className="radio-item" htmlFor="afternoon">
+                    L'après-midi
+                  </label>
+                </div>
+                <div>
+                  <input
+                    checked={this.state.time === "all"}
+                    id="all"
+                    type="radio"
+                    name="details"
+                    value="all"
+                    onChange={this.handleRadio}
+                  />
+                  <label className="radio-item" htmlFor="all">
+                    A toute heure
+                  </label>
+                </div>
+              </div>
+              <ul style={{ marginTop: "40px" }}>
                 {this.state.contact.volunteer_1 ||
                 this.state.contact.volunteer_2 ||
                 this.state.volunteers.length > 0 ? (
@@ -355,6 +459,7 @@ class OneContact extends Component {
               {" "}
               Ajouter un appel
             </span>
+
             <div>{this.state.addCall}</div>
             <h3 style={{ marginTop: "10px" }}>Historique des appels</h3>
             <div className="histo-lists">
@@ -381,7 +486,7 @@ class OneContact extends Component {
                       this.context.user.isMob === true ? (
                         <>
                           <span
-                            style={{ cursor: "pointer", marginRight:"6px" }}
+                            style={{ cursor: "pointer", marginRight: "6px" }}
                             onClick={() => this.updateCall(call._id)}
                           >
                             Editer <i className="far fa-edit"></i>

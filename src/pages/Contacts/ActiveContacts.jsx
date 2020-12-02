@@ -118,7 +118,7 @@ class ActiveContacts extends Component {
                   <Link to={`/contacts/${contact._id}/`}>
                     {contact.lastcall
                       ? this.formatDate(contact.lastcall)
-                      : "never"}
+                      : "Aucun appel"}
                   </Link>
                 </td>
                 <td data-label="Fréquence">

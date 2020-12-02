@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import apiHandler from "../../api/apiHandler";
 import { UserContext } from "../Auth/UserContext";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import fr from "date-fns/locale/fr";
+registerLocale("fr", fr);
 
 class FormCall extends Component {
   static contextType = UserContext;
@@ -12,6 +17,7 @@ class FormCall extends Component {
     creator: "",
     creatorId: "",
     empty: false,
+    created: "",
   };
 
   componentDidMount() {
@@ -26,12 +32,17 @@ class FormCall extends Component {
             empty: call.empty,
             creator: call.creator,
             creatorId: call.creatorId,
+            created: new Date(call.created),
           });
         })
         .catch((apiErr) => {
           console.log(apiErr);
         });
     }
+
+    this.setState({
+      created: new Date(),
+    });
   }
 
   handleChange = (event) => {
@@ -87,11 +98,57 @@ class FormCall extends Component {
       });
   };
 
+  getDate = (date) => {
+    //  console.log(date);
+    return (
+      date.getFullYear() +
+      "-" +
+      ("0" + (date.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + date.getDate()).slice(-2)
+    );
+  };
+
+  handleDate = (event) => {
+    this.setState({
+      created: event,
+    });
+  };
+
   render() {
+    //  console.log(this.state.created);
     return (
       <div>
         <div className="ItemForm-container">
           <form onSubmit={this.handleSubmit}>
+            {/* this.props.action === "edit" */}
+
+            <div>
+              <label className="label" htmlFor="created">
+                Date de l'appel
+              </label>
+              <br />
+              {/* <input data-date-format="DD MMMM YYYY"
+                style={{ padding: "8px", marginRight: "10px" }}
+                id="created"
+                type="date"
+                name="created"
+                value={
+                  this.props.action === "edit"
+                    ? this.getDate(this.state.created)
+                    : this.getDate(new Date())
+                }
+                onChange={this.handleChange}
+              /> */}
+              <DatePicker
+                locale="fr"
+                closeOnScroll={true}
+                selected={this.state.created}
+                onChange={this.handleDate}
+                dateFormat="dd/MM/yyyy"
+              />
+            </div>
+
             <div>
               <label className="label" htmlFor="comment">
                 Compte rendu de l'appel
