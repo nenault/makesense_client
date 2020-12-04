@@ -96,12 +96,16 @@ class ActiveContacts extends Component {
           {contacts.length} contact{contacts.length > 1 ? "s" : ""} actif
           {contacts.length > 1 ? "s" : ""}
         </h3>
-        <SearchBar handleSearch={this.search} type="contact"/>
+        <SearchBar handleSearch={this.search} type="contact" />
         <table>
           <thead>
             <tr>
               <th scope="col">Nom</th>
-              <th scope="col">Dernier<br />appel</th>
+              <th scope="col">
+                Dernier
+                <br />
+                appel
+              </th>
               <th scope="col">Fréquence</th>
               <th scope="col">Editer</th>
               <th scope="col">Désactiver</th>
@@ -123,7 +127,7 @@ class ActiveContacts extends Component {
                 </td>
                 <td data-label="Fréquence">
                   <Link to={`/contacts/${contact._id}/`}>
-                  {contact.frequency}
+                    {contact.frequency}
                   </Link>
                 </td>
                 <td data-label="Editer">

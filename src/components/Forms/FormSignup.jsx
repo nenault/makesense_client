@@ -29,16 +29,24 @@ class FormSignup extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    apiHandler
-      .signup(this.state)
-      .then((data) => {
-        this.context.setUser(data);
-        this.props.history.push("/");
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({ status: "Cet email est déjà utilisé ou n'est pas autorisé" });
+    if (this.state.password) {
+      apiHandler
+        .signup(this.state)
+        .then((data) => {
+          this.context.setUser(data);
+          this.props.history.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            status: "Cet email est déjà utilisé ou n'est pas autorisé",
+          });
+        });
+    } else {
+      this.setState({
+        status: "Vous devez choisir un mot de passe",
       });
+    }
   };
 
   render() {
@@ -61,7 +69,7 @@ class FormSignup extends Component {
           <span
             style={{
               fontWeight: "bold",
-              color:"#e36164"
+              color: "#e36164",
             }}
           >
             {this.state.status}

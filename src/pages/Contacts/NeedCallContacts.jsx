@@ -14,39 +14,56 @@ class NeedCallContacts extends Component {
       .getAll("/api/contacts")
       .then((apiRes) => {
         this.getNeedCallContacts(apiRes.data);
-        this.isCallNeeded();
+        this.isCallNeeded(apiRes.data);
       })
       .catch((apiErr) => {
         console.log(apiErr);
       });
   }
 
-  isCallNeeded() {
-    for (const [index, item] of this.state.contacts.entries()) {
+  isCallNeeded(data) {
+    for (const [index, item] of data.entries()) {
       if (item.lastcall) {
         let lastcall = new Date(item.lastcall);
         let today = new Date();
         const getHour = today.getHours();
 
-        if (
-          (getHour > 14 && item.time === "afternoon") ||
-          (getHour < 14 && item.time === "morning") ||
-          item.time === "all"
-        ) {
-          apiHandler
-            .updateOne("/api/contacts/" + item._id, {
-              isTime: true,
-            })
-            .then((apiRes) => {})
-            .catch((apiErr) => console.log(apiErr));
-        } else {
-          apiHandler
-            .updateOne("/api/contacts/" + item._id, {
-              isTime: false,
-            })
-            .then((apiRes) => {})
-            .catch((apiErr) => console.log(apiErr));
-        }
+        // apiHandler
+        // .updateOne("/api/contacts/" + item._id, {
+        //   isTime: true,
+        // })
+        // .then((apiRes) => {console.log(apiRes);})
+        // .catch((apiErr) => console.log(apiErr));
+
+        // if (getHour > 14 && item.time === "afternoon") {
+        //   apiHandler
+        //     .updateOne("/api/contacts/" + item._id, {
+        //       isTime: true,
+        //     })
+        //     .then((apiRes) => {})
+        //     .catch((apiErr) => console.log(apiErr));
+        // } else if (getHour < 14 && item.time === "morning") {
+        //   apiHandler
+        //     .updateOne("/api/contacts/" + item._id, {
+        //       isTime: true,
+        //     })
+        //     .then((apiRes) => {})
+        //     .catch((apiErr) => console.log(apiErr));
+        // } else if (item.time === "all") {
+        //   apiHandler
+        //     .updateOne("/api/contacts/" + item._id, {
+        //       isTime: true,
+        //     })
+        //     .then((apiRes) => {})
+        //     .catch((apiErr) => console.log(apiErr));
+        // } else {
+        //   apiHandler
+        //     .updateOne("/api/contacts/" + item._id, {
+        //       isTime: false,
+        //     })
+        //     .then((apiRes) => {})
+        //     .catch((apiErr) => console.log(apiErr));
+        // }
 
         let dateDiff = lastcall.getTime() - today.getTime();
         let days = Math.ceil(dateDiff / (1000 * 3600 * 24));
@@ -110,7 +127,6 @@ class NeedCallContacts extends Component {
     const needCallContacts = contacts.filter(
       (contact) =>
         contact.needcall === true &&
-        contact.isTime === true &&
         contact.isActive === true &&
         contact.type != "eMail"
     );
@@ -160,7 +176,7 @@ class NeedCallContacts extends Component {
             <tr>
               <th scope="col">Nom</th>
               <th scope="col">Dernier Appel</th>
-              <th scope="col">Time</th>
+              {/* <th scope="col">Time</th> */}
               <th scope="col">Fréquence d'appel</th>
             </tr>
           </thead>
@@ -177,9 +193,9 @@ class NeedCallContacts extends Component {
                       : "Aucun appel"}
                   </Link>
                 </td>
-                <td scope="row" data-label="Nom">
+                {/* <td scope="row" data-label="Nom">
                   <Link to={`/contacts/${contact._id}/`}>{contact.time}</Link>
-                </td>
+                </td> */}
                 <td data-label="Fréquence d'appel">
                   <Link to={`/contacts/${contact._id}/`}>
                     {contact.frequency}
