@@ -287,7 +287,11 @@ class OneContact extends Component {
 
   render() {
     if (!this.state.contact) {
-      return <div>Loading</div>;
+      return (
+        <div className="loader">
+          <i className="fas fa-spinner"></i>
+        </div>
+      );
     }
 
     return (
@@ -376,7 +380,7 @@ class OneContact extends Component {
                   </label>
                 </div>
               </div>
-              <ul style={{ marginTop: "40px" }}>
+              <ul tyle={{ marginTop: "40px" }}>
                 {this.state.contact.volunteer_1 ||
                 this.state.contact.volunteer_2 ||
                 this.state.volunteers.length > 0 ? (

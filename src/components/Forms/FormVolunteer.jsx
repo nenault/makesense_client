@@ -7,6 +7,7 @@ class FormVolunteer extends Component {
     nom: "",
     prenom: "",
     email: "",
+    status: "",
   };
 
   componentDidMount() {
@@ -48,10 +49,12 @@ class FormVolunteer extends Component {
     apiHandler
       .createOne("/api/volunteers", this.state)
       .then((apiRes) => {
+        // console.log(apiRes);
         this.props.history.push("/users");
       })
       .catch((apiError) => {
         console.log(apiError);
+        this.setState({ status: "Ce bénévole existe déjà" });
       });
   }
 
@@ -119,6 +122,14 @@ class FormVolunteer extends Component {
                   onChange={this.handleChange}
                 />
               </div>
+              <span
+                style={{
+                  fontWeight: "bold",
+                  color: "#e36164",
+                }}
+              >
+                {this.state.status}
+              </span>
             </div>
 
             <button style={{ marginTop: "40px" }} className="btn red">

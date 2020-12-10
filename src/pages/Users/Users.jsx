@@ -72,13 +72,22 @@ class Users extends Component {
     return (
       <div className="page">
         <h1>Les bénévoles</h1>
-        <Link
-          style={{ marginBottom: "40px" }}
-          className="btn red"
-          to={"/volunteers/create"}
-        >
-          Ajouter un bénévole
-        </Link>
+        <div className="volunteers-btn" style={{ marginTop: "30px" }}>
+          <Link
+            style={{ marginBottom: "40px" }}
+            className="btn red"
+            to={"/volunteers/create"}
+          >
+            Créer un bénévole
+          </Link>
+          <Link
+            style={{ marginBottom: "40px", marginLeft: "20px" }}
+            className="btn red"
+            to={"/volunteers/upload"}
+          >
+            Ajouter une liste de bénévoles
+          </Link>
+        </div>
         <div className="users-list">
           <div className="users-mobs">
             <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
@@ -97,7 +106,9 @@ class Users extends Component {
               <tbody>
                 {mobs.map((user) => (
                   <tr key={user._id}>
-                    <td scope="row" data-label="Email">{user.email}</td>
+                    <td scope="row" data-label="Email">
+                      {user.email}
+                    </td>
                     <td data-label="Depuis">{this.formatDate(user.created)}</td>
                     <td data-label="Retirer mob">
                       <Link
@@ -123,7 +134,8 @@ class Users extends Component {
           <div className="users-volunteers">
             <h3 style={{ marginBottom: "10px", color: "#e36164" }}>
               {volunteers.length} participant·e
-              {volunteers.length > 1 ? "·s" : ""} inscrit·e{volunteers.length > 1 ? "·s" : ""}
+              {volunteers.length > 1 ? "·s" : ""} inscrit·e
+              {volunteers.length > 1 ? "·s" : ""}
             </h3>
             <SearchBar handleSearch={this.search} type="bénévole" />
             <table>
@@ -138,7 +150,9 @@ class Users extends Component {
               <tbody>
                 {volunteers.map((user) => (
                   <tr key={user._id}>
-                    <td scope="row" data-label="Email">{user.email}</td>
+                    <td scope="row" data-label="Email">
+                      {user.email}
+                    </td>
                     <td data-label="Depuis">{this.formatDate(user.created)}</td>
                     <td data-label="Nommer mob">
                       <Link

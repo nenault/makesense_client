@@ -28,6 +28,7 @@ import CreateUser from "./pages/Users/CreateUser";
 import EditUser from "./pages/Users/EditUser";
 
 import CreateVolunteer from "./components/Forms/FormVolunteer"
+import UploadVolunteer from "./components/Forms/UploadVolunteer"
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
         <ProtectedAdminRoute exact path="/users/:id/edit" component={EditUser} />
 
         <ProtectedAdminRoute exact path="/volunteers/create" component={CreateVolunteer} />
+        <ProtectedAdminRoute exact path="/volunteers/upload" component={UploadVolunteer} />
 
       </Switch>
     </div>
